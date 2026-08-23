@@ -6,7 +6,7 @@
     <title>Get started — rbitcoin</title>
     <meta
       name="description"
-      content="Download rbitcoin 0.5.1 from GitHub, or build musl with Nix. Cautious mainnet. Watch consensus divergence."
+      content="Download rbitcoin from GitHub, or build musl with Nix. Cautious mainnet. Watch consensus divergence."
     />
     <link rel="canonical" href="https://rbitcoin.org/get-started/" />
     <meta property="og:type" content="website" />
@@ -14,7 +14,7 @@
     <meta property="og:title" content="Get started — rbitcoin" />
     <meta
       property="og:description"
-      content="Download rbitcoin 0.5.1, or build musl with Nix. Cautious mainnet. Watch consensus divergence."
+      content="Download rbitcoin from GitHub, or build musl with Nix. Cautious mainnet. Watch consensus divergence."
     />
     <meta property="og:image" content="https://rbitcoin.org/assets/img/og-image.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -92,7 +92,7 @@
           <div class="status-chip">Cautious mainnet · watch consensus</div>
           <h1>Get started</h1>
           <p>
-            Download 0.5.1, or build musl with Nix. Try signet, then mainnet with another
+            Download <span data-release-version>the GitHub Release</span>, or build musl with Nix. Try signet, then mainnet with another
             implementation in view. Scripts run on rust-bitcoin and libsecp256k1. The on-disk
             format still moves before 1.0.
           </p>
@@ -125,11 +125,23 @@
             </div>
           </div>
 
-          <h2>1. GitHub Release (0.5.1)</h2>
+          <h2>
+            1. GitHub Release<span data-release-wrap hidden>
+              (<a
+                data-release-link
+                href="https://github.com/reardencode/rbitcoin/releases/latest"
+                rel="noopener noreferrer"
+                target="_blank"
+              ></a>)</span>
+          </h2>
           <p>
-            The current published line is
-            <a href="https://github.com/reardencode/rbitcoin/releases/tag/v0.5.1" rel="noopener noreferrer" target="_blank"
-              >0.5.1</a
+            The published download is
+            <a
+              data-release-link
+              href="https://github.com/reardencode/rbitcoin/releases/latest"
+              rel="noopener noreferrer"
+              target="_blank"
+              >the GitHub Release</a
             >.
             The tag attaches <code>rbitcoin-node</code> and <code>rbitcoin-cli</code>:
           </p>
@@ -295,7 +307,8 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
             </li>
             <li><strong>Mode:</strong> full archival only. There is no prune switch.</li>
             <li>
-              <strong>Build:</strong> GitHub Release <strong>0.5.1</strong>, or
+              <strong>Build:</strong> GitHub Release<span data-release-wrap hidden>
+                <strong data-release-version></strong></span>, or
               <code>nix build .#rbitcoin-musl</code> for a byte-identical Linux binary.
             </li>
             <li>
