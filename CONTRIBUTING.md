@@ -23,7 +23,7 @@ python3 -m http.server 8080 --directory public
 
 - Prefer small PRs that update related pages together (e.g. nav in all HTML files).
 - Self-host assets under `public/assets/` (no required CDN).
-- Match the industrial dark visual system in `public/assets/css/main.css`.
+- Match the navy / bitcoin-orange visual system in `public/assets/css/main.css`.
 
 ## License
 
