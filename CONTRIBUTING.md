@@ -17,6 +17,7 @@ This repository is the **marketing site** only. Node code, issues, and operator 
 
 ```bash
 python3 -m http.server 8080 --directory public
+python3 scripts/check-site.py   # href/src, CSS url(), manifest icons, og:image
 ```
 
 ## Changes

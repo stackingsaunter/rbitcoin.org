@@ -7,45 +7,20 @@ on:
     branches: [master, main]
 
 jobs:
-  links:
-    name: internal-links
+  site:
+    name: site-refs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check internal hrefs under public/
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          public = Path("public")
-          fail = 0
-          # Root-absolute internal paths are forbidden (file:// and subpath hosts break)
-          for html in public.rglob("*.html"):
-              text = html.read_text(encoding="utf-8")
-              for kind, ref in re.findall(r'(href|src)="([^"]*)"', text):
-                  if ref.startswith("/") and not ref.startswith("//"):
-                      print(f"absolute {kind} in {html}: {ref}")
-                      fail = 1
-                  if ref.startswith(("http:", "https:", "mailto:", "#")):
-                      continue
-                  path = ref.split("#", 1)[0].split("?", 1)[0]
-                  if not path:
-                      continue
-                  target = (html.parent / path).resolve()
-                  if not target.exists():
-                      print(f"missing {kind} in {html}: {ref} -> {target}")
-                      fail = 1
-          raise SystemExit(fail)
-          PY
+      - name: Check HTML/CSS/manifest references
+        run: python3 scripts/check-site.py
 
   structure:
     name: structure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Required pages and assets exist
+      - name: Required pages and repo files exist
         run: |
           set -euo pipefail
           for f in \
@@ -54,14 +29,6 @@ jobs:
             public/architecture/index.html \
             public/security/index.html \
             public/about/index.html \
-            public/assets/css/main.css \
-            public/assets/js/main.js \
-            public/assets/img/logo.jpg \
-            public/assets/img/favicon.svg \
-            public/assets/img/icon-192.jpg \
-            public/assets/img/apple-touch-icon.jpg \
-            public/assets/img/og-image.jpg \
-            public/assets/img/tracks.jpg \
             public/robots.txt \
             public/sitemap.xml \
             public/site.webmanifest \
