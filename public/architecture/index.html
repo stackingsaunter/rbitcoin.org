@@ -92,9 +92,10 @@
           <div class="status-chip">On-disk store</div>
           <h1>Architecture</h1>
           <p>
-            Lookups go to packed history, not a UTXO set. If you have more than one kind of disk,
-            split hot and cold. Exact table layouts live in the node repo. The format still moves
-            before 1.0; some upgrades rebuild indexes without a full re-sync.
+            Lookups go to packed history, not a UTXO set. The txid index is written during IBD; you
+            cannot sync without it. If you have more than one kind of disk, split hot and cold.
+            Exact table layouts live in the node repo. The format still moves before 1.0; some
+            upgrades rebuild indexes without a full re-sync.
           </p>
         </div>
       </div>
@@ -127,7 +128,7 @@
                 </div>
                 <div class="store-cell">
                   <strong>txid index</strong>
-                  <span>included · newer txs resolve first</span>
+                  <span>structural · IBD writes it</span>
                 </div>
               </div>
             </div>
@@ -329,7 +330,7 @@
                 </tr>
                 <tr>
                   <td>Txid lookup</td>
-                  <td>Full archive txid index included; newer txs resolve first</td>
+                  <td>Full archive txid index, written during IBD. Not optional.</td>
                   <td>Optional txindex; otherwise not the hot path</td>
                 </tr>
                 <tr>
@@ -347,8 +348,40 @@
                   <td>In-tree Rust scripts; rust-bitcoin types; libsecp256k1 for ECDSA/Schnorr</td>
                   <td>libbitcoinconsensus / C++ interpreter</td>
                 </tr>
+                <tr>
+                  <td>IBD RAM</td>
+                  <td>No coins cache. Modest process RSS; the OS page cache is the cache</td>
+                  <td>Multi‑GiB dbcache to keep the UTXO set hot</td>
+                </tr>
+                <tr>
+                  <td>IBD wall-clock</td>
+                  <td>
+                    Laptop-class Core-default milestone IBD in Core’s assumevalid neighborhood.
+                    One measured run, not a warranty. Fetch-path bugs from the first public race
+                    are closed on the 0.6 line.
+                  </td>
+                  <td>assumevalid / default IBD on the same class of host</td>
+                </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="container">
+          <div class="section-head">
+            <h2>Consensus tests</h2>
+            <p>
+              Independent code still has to match the chain. The suite now includes Core’s
+              transaction fixtures, more than sixty of Core’s functional tests (the ones that are
+              not wallet, prune, or plaintext v1), and a named map of
+              <a href="https://hornetnode.org/spec.html" rel="noopener noreferrer" target="_blank"
+                >Hornet Node</a
+              >’s published block-validation rules onto rbitcoin’s own cases. 0.6 also starts a
+              height-1 differential fuzzer against official bitcoind: same mutated block, accept vs
+              reject only. None of that is a 1.0 freeze.
+            </p>
           </div>
         </div>
       </section>
@@ -396,8 +429,9 @@
             <div>
               <p>
                 <strong>Full archival only.</strong> There is no prune switch. The store assumes a
-                complete transaction archive and a transaction index. Wallet indexes are extra disk
-                when you serve Electrum. The format will change before 1.0. See
+                complete transaction archive. The transaction index is structural: IBD writes it,
+                and you cannot sync without it. Wallet indexes are extra disk when you serve
+                Electrum. The format will change before 1.0. See
                 <a
                   href="https://github.com/reardencode/rbitcoin/blob/master/SCHEMA.md"
                   rel="noopener noreferrer"

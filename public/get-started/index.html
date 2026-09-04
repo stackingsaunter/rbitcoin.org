@@ -92,9 +92,10 @@
           <div class="status-chip">Cautious mainnet · watch consensus</div>
           <h1>Get started</h1>
           <p>
-            Download <span data-release-version>the GitHub Release</span>, or build musl with Nix. Try signet, then mainnet with another
-            implementation in view. Scripts run on rust-bitcoin and libsecp256k1. The on-disk
-            format still moves before 1.0.
+            Download <span data-release-version>the GitHub Release</span>, or build musl with Nix.
+            Try signet, then mainnet with another implementation in view. The txid index is written
+            during IBD. Scripts run on rust-bitcoin and libsecp256k1. The on-disk format still
+            moves before 1.0.
           </p>
         </div>
       </div>
@@ -217,7 +218,9 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
 
           <h2>4. Optional surfaces</h2>
           <p>
-            IBD and tip follow do not need wallet indexes. Turn Electrum on when you want wallets.
+            IBD and tip follow do not need wallet indexes. The txid index is not in that bucket: it
+            is written during IBD and you cannot sync without it. Turn Electrum on when you want
+            wallets.
           </p>
           <p>
             <strong>Electrum</strong> is in the same process: history, unconfirmed, broadcast, fees,
@@ -289,7 +292,10 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
               </p>
               <p>
                 Use <code>--milestone 0</code> if you want every historical script checked. The
-                current default height is in the node README.
+                current default height is in the node README. Laptop-class Core-default milestone
+                IBD is in Core’s assumevalid neighborhood on the 0.6 line—one measured run, not a
+                warranty. The first public race lost time to block-fetch assignment bugs; those
+                are closed.
               </p>
             </div>
           </div>

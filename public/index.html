@@ -3,25 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>rbitcoin — a compact Bitcoin archive, not a UTXO set</title>
+    <title>rbitcoin — a Bitcoin full archival node, not a UTXO set</title>
     <meta
       name="description"
-      content="rbitcoin is a compact Bitcoin archive, not a UTXO set. Cautious mainnet. The live risk is consensus divergence. rust-bitcoin, libsecp256k1, Electrum including silent payment tweaks."
+      content="rbitcoin is a Bitcoin full archival node with no UTXO set and no dbcache. Txindex is part of IBD. Cautious mainnet. rust-bitcoin, libsecp256k1, Electrum including silent payment tweaks."
     />
     <link rel="canonical" href="https://rbitcoin.org/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://rbitcoin.org/" />
-    <meta property="og:title" content="rbitcoin — a compact Bitcoin archive, not a UTXO set" />
+    <meta property="og:title" content="rbitcoin — a Bitcoin full archival node, not a UTXO set" />
     <meta
       property="og:description"
-      content="A compact Bitcoin archive, not a UTXO set. Cautious mainnet. Watch consensus divergence."
+      content="A Bitcoin full archival node with no UTXO set and no dbcache. Cautious mainnet. Watch consensus."
     />
     <meta property="og:image" content="https://rbitcoin.org/assets/img/og-image.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="rbitcoin — a compact Bitcoin archive, not a UTXO set" />
+    <meta name="twitter:title" content="rbitcoin — a Bitcoin full archival node, not a UTXO set" />
     <meta
       name="twitter:description"
-      content="Compact archive, rust-bitcoin and libsecp256k1. Electrum including silent payment tweaks. Cautious mainnet."
+      content="Bitcoin full archival node. No UTXO set. rust-bitcoin and libsecp256k1. Electrum including silent payment tweaks. Cautious mainnet."
     />
     <meta name="twitter:image" content="https://rbitcoin.org/assets/img/og-image.jpg" />
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -95,17 +95,21 @@
       <section class="hero hero-split">
         <div class="container">
           <div class="hero-copy">
-            <div class="status-chip">Cautious mainnet · watch consensus</div>
-            <h1>A compact Bitcoin archive, not a UTXO set</h1>
+            <div class="status-chip">Bitcoin full node · full archival</div>
+            <h1>A Bitcoin full archival node, not a UTXO set</h1>
             <p class="hero-lead">
-              Most full nodes keep a UTXO database and a pile of block files. rbitcoin keeps a
-              compact full archive instead, and checks scripts in Rust on rust-bitcoin and
-              libsecp256k1. The same process can serve Electrum—including silent payment tweaks—plus
-              Esplora and a slice of Core JSON-RPC.
+              rbitcoin is a validating Bitcoin full node. Full archival only: the whole chain, no
+              pruning (although inputs and witnesses may be prunable in the future). Core’s node is
+              a UTXO database plus block files, and a large dbcache to make that tolerable. rbitcoin
+              has no coins database. When a block arrives, prevouts come from the archive. No
+              multi‑GiB RAM flush periodically during sync. </p>
+            <p class="hero-lead">
+              The transaction index is part of IBD, not a switch you flip later. Scripts run in
+              Rust on rust-bitcoin and libsecp256k1. The same process can serve
+              Electrum—including silent payment tweaks—plus Esplora and a slice of Core JSON-RPC.
             </p>
             <p class="hero-lead">
-              You can run it on mainnet. The thing to watch is consensus: this is not Core’s
-              interpreter, so it can disagree with Core about what is valid.
+              You can run it on mainnet. Watch consensus: this is not Core’s interpreter.
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="get-started/index.html">Get started</a>
@@ -146,8 +150,8 @@
           <div class="section-head">
             <h2>What’s different</h2>
             <p>
-              No coins database. No separate indexer. One Linux process validates, stores the
-              archive, and can talk to wallets.
+              No coins database. No dbcache. No separate indexer. One Linux process validates,
+              stores the archive, and can talk to wallets.
             </p>
           </div>
           <div class="grid-2">
@@ -159,9 +163,8 @@
               </svg>
               <h3>The archive is the store</h3>
               <p>
-                Outputs, spends, and a transaction index live in ordinary files. When a block
-                arrives, prevouts come from that archive. There is no UTXO set to keep in RAM and no
-                multi‑GiB dbcache to flush.
+                Outputs, spends, and a transaction index live in ordinary files. There is no UTXO
+                set to keep in RAM. Killing dbcache is the point of the layout, not a side effect.
               </p>
             </article>
             <article class="card">
@@ -186,7 +189,9 @@
               <p>
                 Types come from <strong>rust-bitcoin</strong>. ECDSA and Schnorr go through
                 <strong>libsecp256k1</strong>. Scripts run in Rust in this tree. There is no second
-                opinion from <code>libbitcoinconsensus</code>.
+                opinion from <code>libbitcoinconsensus</code>. The tests include Core’s transaction
+                fixtures, a large slice of Core’s functional suite, and a map of another node’s
+                published block-validation rules.
               </p>
             </article>
             <article class="card">
@@ -233,9 +238,11 @@
             </div>
           </div>
           <p class="footnote">
-            Skip <code>--datadir-cold</code> and everything lives in one tree. Sync does not need a
-            multi‑GiB dbcache. GitHub Releases ship binaries; Nix still produces byte-identical musl
-            on Linux.
+            Skip <code>--datadir-cold</code> and everything lives in one tree. The txid index is
+            written during IBD; you cannot sync without it. Sync does not need a multi‑GiB dbcache.
+            On a laptop-class host, Core-default milestone IBD is in the same neighborhood as Core
+            assumevalid—one measured run, not a warranty. GitHub Releases ship binaries; Nix still
+            produces byte-identical musl on Linux.
           </p>
         </div>
       </section>
@@ -256,6 +263,7 @@
                 <li>Electrum in-process, including silent payment tweaks</li>
                 <li>A documented slice of JSON-RPC next to the archive</li>
                 <li>Linux with a 1 TB-class disk, and a second volume if you have one</li>
+                <li>Laptop-class IBD without a multi‑GiB dbcache</li>
               </ul>
             </div>
             <div class="card list-card not">
@@ -275,8 +283,8 @@
           <div class="section-head">
             <h2>Why it exists</h2>
             <p>
-              The interesting part is the store: a compact archive with no UTXO set. Rust consensus
-              and Electrum came with it.
+              The interesting part is the store: a compact archive with no UTXO set, so there is
+              nothing for a dbcache to hold. Rust consensus and Electrum came with it.
               <a href="about/index.html#why">The longer version</a>.
             </p>
           </div>
@@ -290,7 +298,8 @@
               <h2>Run it</h2>
               <p>
                 Grab the GitHub Release, or build musl with Nix. Mainnet is fine if you watch
-                consensus. If the node is useful, send some sats.
+                consensus. 0.6 is the line that closed the IBD fetch-path bugs from the first public
+                Core race. If the node is useful, send some sats.
               </p>
             </div>
             <div class="hero-actions">
@@ -310,7 +319,7 @@
               <img class="brand-mark" src="assets/img/logo-on-dark.svg" width="48" height="34" alt="" />
               <span class="brand-name">rbitcoin</span>
             </a>
-            <p>A compact Bitcoin archive, not a UTXO set. Watch consensus.</p>
+            <p>A Bitcoin full archival node, not a UTXO set. Watch consensus.</p>
           </div>
           <div class="footer-col">
             <h3>Site</h3>

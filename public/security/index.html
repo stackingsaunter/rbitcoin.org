@@ -125,6 +125,18 @@
             <li>This is not a turnkey appliance. Treat it that way.</li>
           </ul>
 
+          <h2>What the tests cover</h2>
+          <p>
+            Independent consensus is the live risk. The node now runs Core’s transaction fixtures,
+            a large slice of Core v31.1 functional tests (not wallet, prune, or v1 P2P), and a
+            checklist of
+            <a href="https://hornetnode.org/spec.html" rel="noopener noreferrer" target="_blank"
+              >Hornet Node</a
+            >’s published block-validation rules mapped onto rbitcoin’s own cases. 0.6 adds a
+            height-1 differential fuzzer against official bitcoind. Coverage is not a claim that
+            the implementations cannot diverge. Report a consensus mismatch privately.
+          </p>
+
           <h2>Milestone and script checks</h2>
           <p>
             Default mainnet <code>--milestone</code> skips <strong>script and signature</strong>
