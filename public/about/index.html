@@ -101,7 +101,7 @@
         <div class="container prose">
           <h2 class="mt-0" id="why">Why rbitcoin exists</h2>
           <p>
-            Killing dbcache is the reason this node exists. Core’s full node uses a UTXO database plus
+            Killing dbcache is the reason this node exists. core’s full node uses a UTXO database plus
             block files. That works. It also means a mutable coins database, a large RAM cache, and
             a pause when the cache fills. rbitcoin has no coins database, so there is nothing for a
             dbcache to hold. Prevouts come from the archive.
@@ -118,30 +118,30 @@
           <p>
             Consensus sits on that archive, in Rust. Types come from
             <strong>rust-bitcoin</strong>. Signatures go through <strong>libsecp256k1</strong>.
-            Scripts run in this tree — not <code>libbitcoinconsensus</code>, and not Core’s
+            Scripts run in this tree — not <code>libbitcoinconsensus</code>, and not core’s
             interpreter with a Rust coat. There is value in several clients sharing one consensus
-            library. There is also value in independent implementations. Core, btcd, and rbitcoin
+            library. There is also value in independent implementations. core, btcd, and rbitcoin
             reading the same chain under different code can show where the understood rules and the
-            real rules disagree. The tests now include Core’s transaction fixtures, a large slice of
-            Core’s functional suite, and a map of
+            real rules disagree. The tests now include core’s transaction fixtures, a large slice of
+            core’s functional suite, and a map of
             <a href="https://hornetnode.org/spec.html" rel="noopener noreferrer" target="_blank">Hornet Node</a>’s
             published block-validation rules onto rbitcoin’s own cases.
           </p>
           <p>
             The same process can serve wallets. Electrum, including
-            <strong>silent payment tweaks</strong>. Esplora if you want REST. A slice of Core
+            <strong>silent payment tweaks</strong>. Esplora if you want REST. A slice of core
             JSON-RPC if you have tools that speak it. This is not a desktop wallet and not a block
             explorer.
           </p>
           <p>
             That design sat in my mind for years — an architecture between libbitcoin’s relational
-            archive and Core’s full node. The project is a way to actually explore it. There was
+            archive and core’s full node. The project is a way to actually explore it. There was
             never the time or energy to build it until AI made the implementation possible.
             <strong>Brandon Black</strong>
             (<a href="https://x.com/reardencode" rel="noopener noreferrer" target="_blank">@reardencode</a>)
             specified and directed the work. Grok wrote the code. In a couple of months the node
-            went from not existing to Core parity in IBD performance, plus Core’s transaction
-            fixtures and more than sixty of Core’s functional tests. Along the way the work
+            went from not existing to core parity in IBD performance, plus core’s transaction
+            fixtures and more than sixty of core’s functional tests. Along the way the work
             documented rust-bitcoin limitations that can be fixed upstream. None of that makes
             consensus, P2P, or Electrum less serious, or changes how bugs should be reported. See
             the node
@@ -164,7 +164,7 @@
 
           <h2>What the node is</h2>
           <p>
-            A validating Bitcoin full node for Linux. Full archival only. The txid index is
+            A validating bitcoin full node for Linux. Full archival only. The txid index is
             structural. Binaries ship as a GitHub Release; Nix produces byte-identical musl.
             On-disk format still moves before 1.0. Be careful about using it on mainnet: watch for
             consensus divergence. 0.6 brings major stability improvements, Hornet-mapped
@@ -317,7 +317,7 @@
               <img class="brand-mark" src="../assets/img/logo-on-dark.svg" width="48" height="34" alt="" />
               <span class="brand-name">rbitcoin</span>
             </a>
-            <p>A compact Bitcoin archive, not a UTXO set. Watch consensus.</p>
+            <p>A compact bitcoin archive, not a UTXO set. Watch consensus.</p>
           </div>
           <div class="footer-col">
             <h3>Site</h3>
