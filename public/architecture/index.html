@@ -92,10 +92,9 @@
           <div class="status-chip">On-disk store</div>
           <h1>Architecture</h1>
           <p>
-            Lookups go to packed history, not a UTXO set. The txid index is written during IBD; you
-            cannot sync without it. If you have more than one kind of disk, split hot and cold.
-            Exact table layouts live in the node repo. The format still moves before 1.0; some
-            upgrades rebuild indexes without a full re-sync.
+            Lookups go to packed history, not a UTXO set. If you have more than one kind of disk,
+            split hot and cold. The format still moves before 1.0; some upgrades rebuild indexes
+            without a full re-sync.
           </p>
         </div>
       </div>
@@ -106,7 +105,7 @@
             <h2>One-screen picture</h2>
             <p>
               The archive is the truth. Outputs and spends stay on the fast disk. Inputs and witness
-              can live on something cheaper. Wallet indexes cost extra disk when you serve Electrum.
+              can live on something cheaper. Wallet indexes cost extra disk if you serve Electrum.
             </p>
           </div>
           <div class="store-diagram" role="img" aria-label="rbitcoin store and lookup diagram">
@@ -236,7 +235,7 @@
         <div class="container">
           <div class="section-head">
             <h2>How lookups work</h2>
-            <p>The questions wallets and the node itself ask most often.</p>
+            <p>Spentness, history, and reconstruction — without a UTXO set.</p>
           </div>
           <div class="table-wrap">
             <table>
@@ -276,23 +275,6 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div class="grid-2 mt-3">
-            <article class="card">
-              <h3>Hot and cold volumes</h3>
-              <p>
-                Plan a <strong>1 TB-class</strong> disk. Keep under <strong>250 GB</strong> hot even
-                with wallet indexes. <code>--datadir-cold</code> puts inputs and witness on a second
-                volume. Reconstruct and raw-tx serve still work.
-              </p>
-            </article>
-            <article class="card">
-              <h3>No UTXO chainstate</h3>
-              <p>
-                Ordinary files under <code>--datadir</code>. No prune. No LevelDB coins database.
-                Historical blocks are rebuilt from packed outs and inwit.
-              </p>
-            </article>
           </div>
         </div>
       </section>
@@ -356,9 +338,7 @@
                 <tr>
                   <td>IBD wall-clock</td>
                   <td>
-                    Laptop-class core-default milestone IBD in core’s assumevalid neighborhood.
-                    One measured run, not a warranty. Fetch-path bugs from the first public race
-                    are closed on the 0.6 line.
+                    IBD in the same neighborhood as core. One measured run, not a warranty.
                   </td>
                   <td>assumevalid / default IBD on the same class of host</td>
                 </tr>
@@ -373,14 +353,13 @@
           <div class="section-head">
             <h2>Consensus tests</h2>
             <p>
-              Independent code still has to match the chain. The suite now includes core’s
-              transaction fixtures, more than sixty of core’s functional tests (the ones that are
-              not wallet, prune, or plaintext v1), and a named map of
+              Independent code still has to match the chain. The suite includes core’s transaction
+              fixtures, more than sixty of core’s functional tests — the ones that are not wallet,
+              prune, or plaintext v1 — and
               <a href="https://hornetnode.org/spec.html" rel="noopener noreferrer" target="_blank"
                 >Hornet Node</a
-              >’s published block-validation rules onto rbitcoin’s own cases. 0.6 also starts a
-              height-1 differential fuzzer against official bitcoind: same mutated block, accept vs
-              reject only. None of that is a 1.0 freeze.
+              >’s published block-validation rules mapped onto rbitcoin’s own cases. None of that is
+              a 1.0 freeze.
             </p>
           </div>
         </div>
@@ -428,17 +407,15 @@
           <div class="callout callout-info mt-3">
             <div>
               <p>
-                <strong>Full archival only.</strong> There is no prune switch. The store assumes a
-                complete transaction archive. The transaction index is structural: IBD writes it,
-                and you cannot sync without it. Wallet indexes are extra disk when you serve
-                Electrum. The format will change before 1.0. See
+                <strong>Full archival only.</strong> There is no prune switch. Wallet indexes are
+                extra disk when you serve Electrum. The format will change before 1.0. Current
+                tables:
                 <a
                   href="https://github.com/reardencode/rbitcoin/blob/master/SCHEMA.md"
                   rel="noopener noreferrer"
                   target="_blank"
                   >SCHEMA.md</a
-                >
-                for the current tables.
+                >.
               </p>
             </div>
           </div>
@@ -491,7 +468,7 @@
           <div class="cta-band">
             <div>
               <h2>Get started</h2>
-              <p>Grab a Release, or build musl with Nix. Watch consensus on mainnet.</p>
+              <p>Grab a Release, or build musl with Nix.</p>
             </div>
             <div class="hero-actions">
               <a class="btn btn-primary" href="../get-started/index.html">Get started</a>
@@ -510,7 +487,7 @@
               <img class="brand-mark" src="../assets/img/logo-on-dark.svg" width="48" height="34" alt="" />
               <span class="brand-name">rbitcoin</span>
             </a>
-            <p>A compact bitcoin archive, not a UTXO set. Watch consensus.</p>
+            <p>A bitcoin full node with a compact archive, and no UTXO set. Beware of potential consensus divergence.</p>
           </div>
           <div class="footer-col">
             <h3>Site</h3>

@@ -14,14 +14,14 @@
     <meta property="og:title" content="rbitcoin — a bitcoin full archival node, not a UTXO set" />
     <meta
       property="og:description"
-      content="A bitcoin full archival node with no UTXO set and no dbcache. Cautious mainnet. Watch consensus."
+      content="A bitcoin full node with a compact archive, and no UTXO set. Beware of potential consensus divergence."
     />
     <meta property="og:image" content="https://rbitcoin.org/assets/img/og-image.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="rbitcoin — a bitcoin full archival node, not a UTXO set" />
     <meta
       name="twitter:description"
-      content="bitcoin full archival node. No UTXO set. rust-bitcoin and libsecp256k1. Electrum including silent payment tweaks. Cautious mainnet."
+      content="A bitcoin full node with a compact archive, and no UTXO set. Beware of potential consensus divergence."
     />
     <meta name="twitter:image" content="https://rbitcoin.org/assets/img/og-image.jpg" />
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
@@ -98,18 +98,16 @@
             <div class="status-chip">bitcoin full node · full archival</div>
             <h1>A bitcoin full archival node, not a UTXO set</h1>
             <p class="hero-lead">
-              rbitcoin is a validating bitcoin full node. Full archival only: the whole chain, no
-              pruning (although inputs and witnesses may be prunable in the future). core’s node is
-              a UTXO database plus block files, and a large dbcache to make that tolerable. rbitcoin
-              has no coins database. When a block arrives, prevouts come from the archive. No
-              multi‑GiB RAM flush periodically during sync. </p>
-            <p class="hero-lead">
-              The transaction index is part of IBD, not a switch you flip later. Scripts run in
-              Rust on rust-bitcoin and libsecp256k1. The same process can serve
-              Electrum—including silent payment tweaks—plus Esplora and a slice of core JSON-RPC.
+              rbitcoin is a validating bitcoin full node. It keeps the whole chain. No prune.
             </p>
             <p class="hero-lead">
-              You can run it on mainnet. Watch consensus: this is not core’s interpreter.
+              core’s full node is a UTXO database plus block files, and a large dbcache to make that
+              tolerable. rbitcoin has no coins database. When a block arrives, prevouts come from
+              the archive. There is no multi‑GiB RAM flush. The transaction index is part of IBD.
+              You cannot sync without it.
+            </p>
+            <p class="hero-lead">
+              You can run it on mainnet. This is not core’s interpreter.
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="get-started/index.html">Get started</a>
@@ -164,7 +162,7 @@
               <h3>The archive is the store</h3>
               <p>
                 Outputs, spends, and a transaction index live in ordinary files. There is no UTXO
-                set to keep in RAM. Killing dbcache is the point of the layout, not a side effect.
+                set to keep in RAM.
               </p>
             </article>
             <article class="card">
@@ -188,10 +186,8 @@
               <h3>rust-bitcoin · libsecp256k1</h3>
               <p>
                 Types come from <strong>rust-bitcoin</strong>. ECDSA and Schnorr go through
-                <strong>libsecp256k1</strong>. Scripts run in Rust in this tree. There is no second
-                opinion from <code>libbitcoinconsensus</code>. The tests include core’s transaction
-                fixtures, a large slice of core’s functional suite, and a map of another node’s
-                published block-validation rules.
+                <strong>libsecp256k1</strong>. Scripts run in this tree. There is no second opinion
+                from <code>libbitcoinconsensus</code>.
               </p>
             </article>
             <article class="card">
@@ -238,11 +234,9 @@
             </div>
           </div>
           <p class="footnote">
-            Skip <code>--datadir-cold</code> and everything lives in one tree. The txid index is
-            written during IBD; you cannot sync without it. Sync does not need a multi‑GiB dbcache.
-            On a laptop-class host, core-default milestone IBD is in the same neighborhood as core
-            assumevalid—one measured run, not a warranty. GitHub Releases ship binaries; Nix still
-            produces byte-identical musl on Linux.
+            Skip <code>--datadir-cold</code> and everything lives in one tree. There is no
+            multi‑GiB dbcache to size. GitHub Releases ship binaries. Nix still produces
+            byte-identical musl on Linux.
           </p>
         </div>
       </section>
@@ -252,8 +246,8 @@
           <div class="section-head">
             <h2>Who it is for</h2>
             <p>
-              People who want to validate, keep a full archive, and serve wallets from the same box,
-              and who can live with an independent consensus implementation. It will not prune.
+              Operators who want to validate, keep a full archive, and serve wallets from the same
+              box. Independent consensus is the live risk.
             </p>
           </div>
           <div class="audience">
@@ -262,7 +256,7 @@
               <ul>
                 <li>Electrum in-process, including silent payment tweaks</li>
                 <li>A documented slice of JSON-RPC next to the archive</li>
-                <li>Linux with a 1 TB-class disk, and a second volume if you have one</li>
+                <li>Linux with a 1 TB-class disk</li>
                 <li>Laptop-class IBD without a multi‑GiB dbcache</li>
               </ul>
             </div>
@@ -283,8 +277,8 @@
           <div class="section-head">
             <h2>Why it exists</h2>
             <p>
-              The interesting part is the store: a compact archive with no UTXO set, so there is
-              nothing for a dbcache to hold. Rust consensus and Electrum came with it.
+              Killing dbcache is why this node exists. A compact archive with no UTXO set leaves
+              nothing for a cache to hold. Rust consensus and Electrum came with it.
               <a href="about/index.html#why">The longer version</a>.
             </p>
           </div>
@@ -297,9 +291,8 @@
             <div>
               <h2>Run it</h2>
               <p>
-                Grab the GitHub Release, or build musl with Nix. Mainnet is fine if you watch
-                consensus. 0.6 is the line that closed the IBD fetch-path bugs from the first public
-                core race. If the node is useful, send some sats.
+                Grab the GitHub Release, or build musl with Nix. If the node is useful, send some
+                sats.
               </p>
             </div>
             <div class="hero-actions">
@@ -319,7 +312,7 @@
               <img class="brand-mark" src="assets/img/logo-on-dark.svg" width="48" height="34" alt="" />
               <span class="brand-name">rbitcoin</span>
             </a>
-            <p>A bitcoin full archival node, not a UTXO set. Watch consensus.</p>
+            <p>A bitcoin full node with a compact archive, and no UTXO set. Beware of potential consensus divergence.</p>
           </div>
           <div class="footer-col">
             <h3>Site</h3>

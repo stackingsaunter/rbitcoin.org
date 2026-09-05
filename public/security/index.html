@@ -122,27 +122,35 @@
               There is no multi-year LTS branch yet; security-relevant fixes land on the active 0.x
               line.
             </li>
-            <li>This is not a turnkey appliance. Treat it that way.</li>
+            <li>This is not a turnkey appliance.</li>
           </ul>
 
           <h2>What the tests cover</h2>
           <p>
-            Independent consensus is the live risk. The node now runs core’s transaction fixtures,
-            a large slice of core v31.1 functional tests (not wallet, prune, or v1 P2P), and a
-            checklist of
+            Independent consensus is the live risk. Tests do not change that.
+          </p>
+          <p>
+            The node runs core’s transaction fixtures, a large slice of core v31.1 functional tests
+            (not wallet, prune, or v1 P2P), and a checklist of
             <a href="https://hornetnode.org/spec.html" rel="noopener noreferrer" target="_blank"
               >Hornet Node</a
             >’s published block-validation rules mapped onto rbitcoin’s own cases. 0.6 adds a
-            height-1 differential fuzzer against official bitcoind. Coverage is not a claim that
-            the implementations cannot diverge. Report a consensus mismatch privately.
+            height-1 differential fuzzer against official bitcoind.
+          </p>
+          <p>
+            Coverage is not a claim that the implementations cannot diverge. Report a consensus
+            mismatch privately.
           </p>
 
           <h2>Milestone and script checks</h2>
           <p>
             Default mainnet <code>--milestone</code> skips <strong>script and signature</strong>
             checks at or below that height. Same idea as assumevalid. Prevouts, double-spends,
-            maturity, and fees still run. Use <code>--milestone 0</code> if you want every historical
-            script checked. The default flag is not a claim that they were.
+            maturity, and fees still run.
+          </p>
+          <p>
+            Use <code>--milestone 0</code> if you want every historical script checked. The default
+            flag is not a claim that they were.
           </p>
 
           <h2>In scope (node)</h2>
@@ -188,7 +196,7 @@
           <h2>This website</h2>
           <p>
             rbitcoin.org is static HTML, CSS, and JavaScript. No backend. Report serious site issues
-            (XSS in checked-in scripts, that kind of thing) to
+            — XSS in checked-in scripts, for example — to
             <a href="mailto:security@reardencode.com">security@reardencode.com</a>.
             Typos and broken links can be ordinary issues or pull requests.
           </p>
@@ -242,7 +250,7 @@
               <img class="brand-mark" src="../assets/img/logo-on-dark.svg" width="48" height="34" alt="" />
               <span class="brand-name">rbitcoin</span>
             </a>
-            <p>A compact bitcoin archive, not a UTXO set. Watch consensus.</p>
+            <p>A bitcoin full node with a compact archive, and no UTXO set. Beware of potential consensus divergence.</p>
           </div>
           <div class="footer-col">
             <h3>Site</h3>

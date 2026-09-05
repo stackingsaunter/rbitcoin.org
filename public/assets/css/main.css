@@ -415,6 +415,10 @@ main {
   color: var(--text-muted);
 }
 
+.section-head p + p {
+  margin-top: 0.75rem;
+}
+
 /* ——— Hero ——— */
 .hero {
   position: relative;
