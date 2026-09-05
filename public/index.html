@@ -96,18 +96,19 @@
         <div class="container">
           <div class="hero-copy">
             <div class="status-chip">bitcoin full node · full archival</div>
-            <h1>A bitcoin full archival node, not a UTXO set</h1>
+            <h1>A bitcoin full node with a compact archive, and no UTXO set</h1>
             <p class="hero-lead">
-              rbitcoin is a validating bitcoin full node. It keeps the whole chain. No prune.
+              Unlike bitocin core with its UTXO database plus block files and
+              a large dbcache to make that tolerable, rbitcoin has no UTXO
+              database. When blocks arrive, the necessary prevouts are loaded
+              from the efficiently indexed archive. There is no multi‑GiB
+              dbcache putting pressure on the OS page cache or requiring time
+              consuming flushes to disk. rbitcoin's transaction index is part
+              of archive structure, so you can't sync without it.
             </p>
             <p class="hero-lead">
-              core’s full node is a UTXO database plus block files, and a large dbcache to make that
-              tolerable. rbitcoin has no coins database. When a block arrives, prevouts come from
-              the archive. There is no multi‑GiB RAM flush. The transaction index is part of IBD.
-              You cannot sync without it.
-            </p>
-            <p class="hero-lead">
-              You can run it on mainnet. This is not core’s interpreter.
+              You can run it on mainnet. But beware of consensus divergence -
+              this is not core’s interpreter.
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="get-started/index.html">Get started</a>
