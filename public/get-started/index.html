@@ -6,7 +6,7 @@
     <title>Get started — rbitcoin</title>
     <meta
       name="description"
-      content="Download rbitcoin from GitHub, or build musl with Nix. Cautious mainnet. Beware of potential consensus divergence."
+      content="Download rbitcoin from GitHub, or build musl with Nix. Production Ready™."
     />
     <link rel="canonical" href="https://rbitcoin.org/get-started/" />
     <meta property="og:type" content="website" />
@@ -14,7 +14,7 @@
     <meta property="og:title" content="Get started — rbitcoin" />
     <meta
       property="og:description"
-      content="Download rbitcoin from GitHub, or build musl with Nix. Cautious mainnet. Beware of potential consensus divergence."
+      content="Download rbitcoin from GitHub, or build musl with Nix. Production Ready™."
     />
     <meta property="og:image" content="https://rbitcoin.org/assets/img/og-image.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -89,7 +89,7 @@
       <div class="page-hero">
         <div class="hero-tracks" aria-hidden="true"><img src="../assets/img/logo-on-dark.svg" alt="" decoding="async" /></div>
         <div class="container">
-          <div class="status-chip">Cautious mainnet</div>
+          <div class="status-chip">Production Ready™</div>
           <h1>Get started</h1>
           <p>
             Download <span data-release-version>the GitHub Release</span>, or build musl with Nix.
@@ -104,10 +104,10 @@
           <div class="callout callout-warn mb-2">
             <div>
               <p>
-                <strong>Cautious mainnet.</strong> IBD, tip follow, and wallet serving work. The
-                remaining risk is consensus divergence: this implementation can accept or reject
-                differently from core. Keep another node in view before you treat rbitcoin as your
-                only picture of the chain.
+                <strong>Mainnet.</strong> IBD, tip follow, and wallet serving work. Consensus is
+                independent of bitcoin core’s engine; the growing functional, fuzz, and spec test
+                suite is why rbitcoin expects to match. You may want to keep another node in view
+                before you treat rbitcoin as your only picture of the chain.
               </p>
               <p>
                 Read the
@@ -305,8 +305,9 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
               snapshots exist; they are unproven. Darwin is aarch64 only.
             </li>
             <li>
-              <strong>Disk:</strong> 1 TB-class for a full archive.
-                <code>--datadir-cold</code> if you have two volumes.
+              <strong>Disk:</strong> 1 TB-class for a full archive. Keep under 250 GB on hot storage
+              even with full indexes; use <code>--datadir-cold</code> for the rest if you have two
+              volumes.
             </li>
             <li><strong>Mode:</strong> full archival only. There is no prune switch.</li>
             <li>
@@ -400,7 +401,7 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
               <img class="brand-mark" src="../assets/img/logo-on-dark.svg" width="48" height="34" alt="" />
               <span class="brand-name">rbitcoin</span>
             </a>
-            <p>A bitcoin full node with a compact archive, and no UTXO set. Beware of potential consensus divergence.</p>
+            <p>Compact archive. No UTXO set. Production Ready™.</p>
           </div>
           <div class="footer-col">
             <h3>Site</h3>

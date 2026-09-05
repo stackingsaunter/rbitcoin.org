@@ -92,8 +92,8 @@
           <div class="status-chip">Report privately</div>
           <h1>Security</h1>
           <p>
-            You can run mainnet. Consensus bugs are in scope: this implementation can diverge from
-            core.
+            You can run mainnet. Consensus is independent of bitcoin core’s engine; functional,
+            fuzz, and spec tests give reason to expect a match. Consensus bugs remain in scope.
           </p>
         </div>
       </div>
@@ -115,8 +115,10 @@
           <ul>
             <li>On-disk format and public APIs are <strong>unstable until 1.0</strong>.</li>
             <li>
-              <strong>Mainnet is cautious.</strong> The live risk is consensus divergence from core
-              until 1.0.
+              <strong>Mainnet.</strong> Consensus is independent of bitcoin core’s engine; coverage
+              is growing across functional, fuzz, and specification tests. Divergence is still
+              possible until 1.0 — see
+              <a href="#tests">what the tests cover</a>.
             </li>
             <li>
               There is no multi-year LTS branch yet; security-relevant fixes land on the active 0.x
@@ -125,21 +127,14 @@
             <li>This is not a turnkey appliance.</li>
           </ul>
 
-          <h2>What the tests cover</h2>
+          <h2 id="tests">What the tests cover</h2>
           <p>
-            Independent consensus is the live risk. Tests do not change that.
-          </p>
-          <p>
-            The node runs core’s transaction fixtures, a large slice of core v31.1 functional tests
-            (not wallet, prune, or v1 P2P), and a checklist of
-            <a href="https://hornetnode.org/spec.html" rel="noopener noreferrer" target="_blank"
-              >Hornet Node</a
-            >’s published block-validation rules mapped onto rbitcoin’s own cases. 0.6 adds a
-            height-1 differential fuzzer against official bitcoind.
-          </p>
-          <p>
-            Coverage is not a claim that the implementations cannot diverge. Report a consensus
-            mismatch privately.
+            Independent consensus is the live risk. Tests do not change that. The node runs bitcoin
+            core’s transaction fixtures, <strong>62</strong> unmodified bitcoin core v31.1 functional
+            tests (excluding wallet, prune, and plaintext v1 P2P), and Hornet Node’s published
+            block-validation rules mapped onto rbitcoin’s own cases. 0.6 adds height-1 differential
+            fuzz against official bitcoind. Coverage is not proof the implementations cannot
+            diverge — report a consensus mismatch privately.
           </p>
 
           <h2>Milestone and script checks</h2>
@@ -250,7 +245,7 @@
               <img class="brand-mark" src="../assets/img/logo-on-dark.svg" width="48" height="34" alt="" />
               <span class="brand-name">rbitcoin</span>
             </a>
-            <p>A bitcoin full node with a compact archive, and no UTXO set. Beware of potential consensus divergence.</p>
+            <p>Compact archive. No UTXO set. Production Ready™.</p>
           </div>
           <div class="footer-col">
             <h3>Site</h3>

@@ -6,7 +6,7 @@
     <title>About — rbitcoin</title>
     <meta
       name="description"
-      content="Why rbitcoin exists: kill dbcache, compact archive without a UTXO set, rust-native consensus, Electrum including silent payment tweaks."
+      content="A bitcoin full node: compact archive, no UTXO set, rust-native consensus, Electrum including silent payment tweaks."
     />
     <link rel="canonical" href="https://rbitcoin.org/about/" />
     <meta property="og:type" content="website" />
@@ -14,7 +14,7 @@
     <meta property="og:title" content="About — rbitcoin" />
     <meta
       property="og:description"
-      content="Why rbitcoin exists: kill dbcache, compact archive without a UTXO set, rust-native consensus, Electrum including silent payment tweaks."
+      content="A bitcoin full node: compact archive, no UTXO set, rust-native consensus, Electrum including silent payment tweaks."
     />
     <meta property="og:image" content="https://rbitcoin.org/assets/img/og-image.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -100,65 +100,30 @@
       <section class="section">
         <div class="container prose">
           <h2 class="mt-0" id="why">Why rbitcoin exists</h2>
-          <p>Killing dbcache is why this node exists.</p>
           <p>
-            core’s full node is a UTXO database plus block files. That works. It also means a
-            mutable coins database, a large RAM cache, and a pause when the cache fills. rbitcoin
-            has no coins database, so there is nothing for a dbcache to hold. Prevouts come from
-            the archive.
+            For years Rearden wanted to kill dbcache. bitcoin core’s full node is a UTXO database
+            plus block files; the multi‑GiB cache exists to keep that coins set hot and to absorb
+            the cost of flushing it. A compact archive with no UTXO set leaves nothing for that
+            cache to hold. Prevouts come from indexed history instead.
           </p>
           <p>
-            The store is a compact relational archive: outputs and spends, inputs and witness that
-            can sit on a cheaper disk, and a transaction index in the same tree. That index is not
-            an extra. IBD writes it. You cannot sync without it.
+            rbitcoin's design sits between libbitcoin’s relational archive and core’s block files —
+            full archival, structural txindex, consensus in Rust on rust-bitcoin and libsecp256k1,
+            and wallet serving in the same process. There is value in several clients sharing one
+            consensus library (e.g. libbitcoinconsensus). rbitcoin exists because Rearden
+            believes that there is also value in independent implementations reading the same chain
+            under different code.
           </p>
           <p>
-            rbitcoin is full archival. No pruning — though input/witness pruning may be an option
-            later. A <strong>1 TB-class</strong> drive holds the archive. Under
-            <strong>250 GB</strong> needs a fast SSD even with wallet indexes.
-            <code>--datadir-cold</code> is how you split the two. Script checks should be limited
-            by libsecp256k1, not by the store.
-          </p>
-          <p>
-            Consensus sits on that archive, in Rust. Types come from
-            <strong>rust-bitcoin</strong>. Signatures go through <strong>libsecp256k1</strong>.
-            Scripts run in this tree — not <code>libbitcoinconsensus</code>, and not core’s
-            interpreter with a Rust coat.
-          </p>
-          <p>
-            There is value in several clients sharing one consensus library. There is also value in
-            independent implementations. core, btcd, and rbitcoin reading the same chain under
-            different code can show where the understood rules and the real rules disagree.
-          </p>
-          <p>
-            The same process can serve wallets. Electrum, including
-            <strong>silent payment tweaks</strong>. Esplora if you want REST. A slice of core
-            JSON-RPC if you have tools that speak it. This is not a desktop wallet and not a block
-            explorer.
-          </p>
-          <p>
-            The design sat for years: an architecture between libbitcoin’s relational archive and
-            core’s block files. The project exists to explore that space. There was never the time
-            or energy to build it until AI made the implementation possible.
-            <strong>Brandon Black</strong>
+            <strong>Rearden</strong> 
             (<a href="https://x.com/reardencode" rel="noopener noreferrer" target="_blank">@reardencode</a>)
-            specified and directed the work. Grok wrote the code.
-          </p>
-          <p>
-            In a couple of months the node went from not existing to IBD in the same
-            neighborhood as core, plus core’s transaction fixtures and more than sixty
-            of core’s functional tests. Along the way the work documented rust-bitcoin limitations
-            that can be fixed upstream. None of that makes consensus, P2P, or Electrum less
-            serious, or changes how bugs should be reported. See the node
-            <a
-              href="https://github.com/reardencode/rbitcoin/blob/master/SECURITY.md"
-              rel="noopener noreferrer"
-              target="_blank"
-              >SECURITY.md</a
-            >.
-          </p>
-          <p>
-            A first on-camera conversation about that work:
+            never had the time or energy to build this node design until AI made the
+            implementation possible. Using grok build and cursor, he specified
+            and directed the work. Grok wrote the code (with a little help from
+            Claude). In a couple of months the node went from not existing to
+            IBD performance in the same neighborhood as core, with a growing
+            suite of core fixtures, functional tests, and differential fuzz. A
+            first on-camera conversation about this work:
             <a
               href="https://x.com/PlebUnderground/status/2095904882398265361"
               rel="noopener noreferrer"
@@ -169,15 +134,15 @@
 
           <h2>What the node is</h2>
           <p>
-            A validating bitcoin full node for Linux. Binaries ship as a GitHub Release; Nix
-            produces byte-identical musl. The on-disk format still moves before 1.0.
+            A validating bitcoin full node for Linux: compact archive, no UTXO set, rust-bitcoin
+            types, libsecp256k1 crypto, custom store with structural txindex. Full archival.
+            Binaries ship as a GitHub Release; Nix produces reproducible (byte-identical) musl.
           </p>
           <p>
-            0.6 maps
-            <a href="https://hornetnode.org/spec.html" rel="noopener noreferrer" target="_blank"
-              >Hornet Node</a
-            >’s published block-validation rules onto rbitcoin’s own cases and starts height-1
-            differential fuzz against official bitcoind. That is coverage, not a 1.0 freeze.
+            0.6 adds Hornet Node rule coverage and differential fuzz against official
+            bitcoind —
+            <a href="../security/index.html#tests">what the tests cover</a>
+            is spelled out on Security.
           </p>
 
           <h2>Contact</h2>
@@ -326,7 +291,7 @@
               <img class="brand-mark" src="../assets/img/logo-on-dark.svg" width="48" height="34" alt="" />
               <span class="brand-name">rbitcoin</span>
             </a>
-            <p>A bitcoin full node with a compact archive, and no UTXO set. Beware of potential consensus divergence.</p>
+            <p>Compact archive. No UTXO set. Production Ready™.</p>
           </div>
           <div class="footer-col">
             <h3>Site</h3>
