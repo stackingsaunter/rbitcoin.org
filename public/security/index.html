@@ -121,8 +121,8 @@
               <a href="#tests">what the tests cover</a>.
             </li>
             <li>
-              There is no multi-year LTS branch yet; security-relevant fixes land on the active 0.x
-              line.
+              <strong>0.6.x</strong> is the supported published line until 0.7 or 1.0. No
+              multi-year LTS branch yet.
             </li>
             <li>This is not a turnkey appliance.</li>
           </ul>
@@ -130,11 +130,12 @@
           <h2 id="tests">What the tests cover</h2>
           <p>
             Independent consensus is the live risk. Tests do not change that. The node runs bitcoin
-            core’s transaction fixtures, <strong>62</strong> unmodified bitcoin core v31.1 functional
-            tests (excluding wallet, prune, and plaintext v1 P2P), and Hornet Node’s published
-            block-validation rules mapped onto rbitcoin’s own cases. 0.6 adds height-1 differential
-            fuzz against official bitcoind. Coverage is not proof the implementations cannot
-            diverge — report a consensus mismatch privately.
+            core’s transaction fixtures, <strong>71</strong> unmodified bitcoin core v31.1 functional
+            tests (excluding wallet, prune, and plaintext v1 P2P — 62 at 0.5.2, 14 at 0.5.0), Hornet
+            Node’s published block-validation rules mapped onto rbitcoin’s own cases, and nightly
+            differential fuzz against official bitcoind (block, spend, fork, compact, script,
+            BIP324). Coverage is not proof the implementations cannot diverge — report a consensus
+            mismatch privately.
           </p>
 
           <h2>Milestone and script checks</h2>

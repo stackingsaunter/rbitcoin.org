@@ -139,10 +139,12 @@
             Binaries ship as a GitHub Release; Nix produces reproducible (byte-identical) musl.
           </p>
           <p>
-            0.6 adds Hornet Node rule coverage and differential fuzz against official
-            bitcoind —
-            <a href="../security/index.html#tests">what the tests cover</a>
-            is spelled out on Security.
+            <strong>0.6</strong> is the current published line (<code>v0.6.x</code>). Since 0.5.2:
+            JSON-RPC decode on the node; tip connect runs off the reactor thread;
+            <strong>71</strong> core functional scripts, Hornet Node rule coverage, and continuous
+            differential fuzz against official bitcoind. On-disk schema 20 may refuse older wallet
+            indexes — see OPERATOR.md before upgrading. Test detail:
+            <a href="../security/index.html#tests">what the tests cover</a>.
           </p>
 
           <h2>Contact</h2>

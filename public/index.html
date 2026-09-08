@@ -100,11 +100,11 @@
             <p class="hero-lead">
               rbitcoin is a bitcoin full node built around a compact archive — no UTXO set.
               Outputs, spends, and a structural transaction index live in a custom on-disk format
-              with indexing matched to how bitcoin data is actually queried. When a block arrives,
-              prevouts come from that archive, not from a mutable coins database. Consensus is
-              rust-native: rust-bitcoin types, libsecp256k1 for crypto, scripts in this tree. The
-              same process can serve Electrum, including silent payment tweaks, plus Esplora and a
-              slice of bitcoin core JSON-RPC.
+              with indexing matched to how bitcoin data is queried. When a block arrives, prevouts
+              come from that archive, not from a mutable coins database. Consensus is rust-native:
+              rust-bitcoin types, libsecp256k1 for crypto, scripts in this tree. The same process
+              can serve Electrum, including silent payment tweaks, plus Esplora and a slice of
+              bitcoin core JSON-RPC.
             </p>
             <p class="hero-lead">
               Mainnet works today. Consensus runs in this tree, not bitcoin core’s engine — but the
@@ -199,9 +199,9 @@
               </svg>
               <h3>A slice of bitcoin core JSON-RPC</h3>
               <p>
-                Chain, mempool, raw transactions, fee estimates, and a block template selector.
-                Cookie or user/pass. No wallet, no stratum, no UTXO scanner. For script history, use
-                Electrum.
+                Chain, mempool, raw transactions, decode helpers, fee estimates, and a block template
+                selector. Cookie or user/pass. No wallet, no stratum, no UTXO scanner. For script
+                history, use Electrum.
               </p>
             </article>
           </div>
@@ -247,8 +247,9 @@
             <h2>Who it is for</h2>
             <p>
               Operators who want to validate, keep a full archive, and serve wallets from the same
-              box. Consensus is rust-native, not bitcoin core’s engine; you may want another node
-              in view on mainnet until you are satisfied the tests cover your use.
+              box. Consensus is rust-native, not bitcoin core’s engine; 71 core functional scripts,
+              Hornet Node rules, and continuous fuzz are growing coverage — you may want another
+              node in view on mainnet until you are satisfied for your use.
             </p>
           </div>
           <div class="audience">

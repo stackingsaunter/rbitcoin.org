@@ -93,8 +93,8 @@
           <h1>Architecture</h1>
           <p>
             Lookups go to packed history, not a UTXO set. If you have more than one kind of disk,
-            split hot and cold. The format still moves before 1.0; some upgrades rebuild indexes
-            without a full re-sync.
+            split hot and cold. Schema 20 is current on the 0.6 line; the format still moves before
+            1.0. Some upgrades rebuild indexes without a full re-sync.
           </p>
         </div>
       </div>
@@ -302,7 +302,7 @@
                 </tr>
                 <tr>
                   <td>Historical blocks</td>
-                  <td>Reconstruct from packed outs + inwit</td>
+                  <td>Reconstruct from packed outs + inwit; IBD <code>getdata</code> serves from archive spans</td>
                   <td>Serve raw blk / undo</td>
                 </tr>
                 <tr>
@@ -322,7 +322,7 @@
                 </tr>
                 <tr>
                   <td>JSON-RPC</td>
-                  <td>Optional documented subset; cookie or user/pass; template selector, no stratum</td>
+                  <td>Optional documented subset; decode helpers; cookie or user/pass; template selector, no stratum</td>
                   <td>Large core surface including wallet and mining</td>
                 </tr>
                 <tr>

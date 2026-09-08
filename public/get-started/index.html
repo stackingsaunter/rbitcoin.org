@@ -128,6 +128,29 @@
             </div>
           </div>
 
+          <div class="callout callout-info mb-2">
+            <div>
+              <p>
+                <strong>Upgrading from 0.5.x.</strong> Schema 20 seals index heads differently.
+                Occupied schema 18/19 wallet indexes are refused — wipe those index dirs or rebuild;
+                Class A archive data stays. See
+                <a
+                  href="https://github.com/reardencode/rbitcoin/blob/master/CHANGELOG.md"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  >CHANGELOG</a
+                >
+                and
+                <a
+                  href="https://github.com/reardencode/rbitcoin/blob/master/OPERATOR.md"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  >OPERATOR.md</a
+                >.
+              </p>
+            </div>
+          </div>
+
           <h2>
             1. GitHub Release<span data-release-wrap hidden>
               (<a
@@ -242,8 +265,12 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
           <p>
             <strong>JSON-RPC</strong> (<code>--rpc-listen</code>, cookie or
             <code>--rpcuser</code> / <code>--rpcpassword</code>) is a slice of core’s surface: chain,
-            mempool, raw transactions, fee estimates, and a block template selector. No wallet, no
-            stratum, no <code>scantxoutset</code> coins scan. See
+            mempool, raw transactions,
+            <code>decoderawtransaction</code> / <code>decodescript</code> /
+            <code>validateaddress</code>, fee estimates, and a block template selector. Verbose
+            transaction objects include core-style <code>scriptSig</code> and
+            <code>scriptPubKey.type</code>. No wallet, no stratum, no
+            <code>scantxoutset</code> coins scan. See
             <a
               href="https://github.com/reardencode/rbitcoin/blob/master/docs/rpc.md"
               rel="noopener noreferrer"
@@ -316,8 +343,9 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
               <code>nix build .#rbitcoin-musl</code> for a byte-identical Linux binary.
             </li>
             <li>
-              <strong>P2P:</strong> BIP324 version 2 only; plan reverse-proxy TLS for Electrum and
-              Esplora if you expose them beyond localhost.
+              <strong>P2P:</strong> BIP324 version 2 only; optional asmap (<code>--asmap</code> /
+              <code>ip_asn.dat</code>) for outbound peer diversity. Plan reverse-proxy TLS for
+              Electrum and Esplora if you expose them beyond localhost.
             </li>
           </ul>
 
