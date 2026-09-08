@@ -71,8 +71,8 @@
 
   var RELEASES_URL =
     "https://api.github.com/repos/reardencode/rbitcoin/releases?per_page=100";
-  var RELEASE_CACHE_KEY = "rbitcoin:highest-release";
-  var RELEASE_CACHE_TTL_MS = 60 * 60 * 1000;
+  var RELEASE_CACHE_KEY = "rbitcoin:release-info:v2";
+  var RELEASE_CACHE_TTL_MS = 15 * 60 * 1000;
 
   function parseReleasedSemver(tag) {
     var m = String(tag || "").match(/^v?(\d+)\.(\d+)\.(\d+)$/);
@@ -92,32 +92,64 @@
     return a.patch > b.patch;
   }
 
-  function pickHighestRelease(releases) {
-    var best = null;
-    if (!Array.isArray(releases)) return null;
+  function sortReleasesDesc(releases) {
+    var parsed = [];
+    if (!Array.isArray(releases)) return parsed;
     for (var i = 0; i < releases.length; i++) {
       var rel = releases[i];
       if (!rel || rel.draft || rel.prerelease) continue;
-      var parsed = parseReleasedSemver(rel.tag_name);
-      if (!parsed) continue;
-      if (!best || semverGreater(parsed, best)) {
-        best = parsed;
-        best.htmlUrl =
-          rel.html_url ||
-          "https://github.com/reardencode/rbitcoin/releases/tag/" + parsed.tag;
-      }
+      var item = parseReleasedSemver(rel.tag_name);
+      if (!item) continue;
+      item.htmlUrl =
+        rel.html_url ||
+        "https://github.com/reardencode/rbitcoin/releases/tag/" + encodeURIComponent(item.tag);
+      parsed.push(item);
     }
-    return best;
+    parsed.sort(function (a, b) {
+      return semverGreater(a, b) ? -1 : semverGreater(b, a) ? 1 : 0;
+    });
+    return parsed;
   }
 
-  function applyRelease(release) {
-    if (!release || !release.version || !release.htmlUrl) return;
-    document.querySelectorAll("[data-release-version]").forEach(function (el) {
-      el.textContent = release.version;
+  function buildReleaseInfo(releases) {
+    var sorted = sortReleasesDesc(releases);
+    if (!sorted.length) return null;
+    var latest = sorted[0];
+    var prev = sorted[1] || null;
+    var minor = latest.major + "." + latest.minor;
+    return {
+      version: latest.version,
+      minor: minor,
+      line: minor + ".x",
+      lineTag: "v" + minor + ".x",
+      tag: latest.tag,
+      htmlUrl: latest.htmlUrl,
+      prevVersion: prev ? prev.version : "",
+      prevLine: prev ? prev.major + "." + prev.minor + ".x" : "",
+      nextMinor: latest.major + "." + (latest.minor + 1),
+      cachedAt: Date.now(),
+    };
+  }
+
+  function setTextAll(selector, value) {
+    if (!value) return;
+    document.querySelectorAll(selector).forEach(function (el) {
+      el.textContent = value;
     });
+  }
+
+  function applyRelease(info) {
+    if (!info || !info.version || !info.htmlUrl) return;
+    setTextAll("[data-release-version]", info.version);
+    setTextAll("[data-release-minor]", info.minor);
+    setTextAll("[data-release-line]", info.line);
+    setTextAll("[data-release-line-tag]", info.lineTag);
+    setTextAll("[data-release-prev-version]", info.prevVersion);
+    setTextAll("[data-release-prev-line]", info.prevLine);
+    setTextAll("[data-release-next-minor]", info.nextMinor);
     document.querySelectorAll("[data-release-link]").forEach(function (el) {
-      el.setAttribute("href", release.htmlUrl);
-      el.textContent = release.version;
+      el.setAttribute("href", info.htmlUrl);
+      el.textContent = info.version;
     });
     document.querySelectorAll("[data-release-wrap]").forEach(function (el) {
       el.removeAttribute("hidden");
@@ -137,49 +169,41 @@
     }
   }
 
-  function writeReleaseCache(release) {
+  function writeReleaseCache(info) {
     try {
-      sessionStorage.setItem(
-        RELEASE_CACHE_KEY,
-        JSON.stringify({
-          version: release.version,
-          htmlUrl: release.htmlUrl,
-          cachedAt: Date.now(),
-        })
-      );
+      sessionStorage.setItem(RELEASE_CACHE_KEY, JSON.stringify(info));
     } catch (_) {
       /* ignore quota / private mode */
     }
   }
 
-  function loadHighestRelease() {
-    if (
-      !document.querySelector(
-        "[data-release-version], [data-release-link], [data-release-wrap]"
-      )
-    ) {
-      return;
-    }
-
-    var cached = readReleaseCache();
-    if (cached) {
-      applyRelease(cached);
-      return;
-    }
-
-    fetch(RELEASES_URL, { headers: { Accept: "application/vnd.github+json" } })
+  function fetchReleaseInfo() {
+    return fetch(RELEASES_URL, { headers: { Accept: "application/vnd.github+json" } })
       .then(function (res) {
         if (!res.ok) throw new Error("releases " + res.status);
         return res.json();
       })
       .then(function (releases) {
-        var best = pickHighestRelease(releases);
-        if (!best) return;
-        writeReleaseCache(best);
-        applyRelease(best);
+        return buildReleaseInfo(releases);
+      });
+  }
+
+  function loadHighestRelease() {
+    var cached = readReleaseCache();
+    if (cached) {
+      applyRelease(cached);
+    }
+
+    fetchReleaseInfo()
+      .then(function (info) {
+        if (!info) return;
+        if (!cached || cached.version !== info.version) {
+          writeReleaseCache(info);
+          applyRelease(info);
+        }
       })
       .catch(function () {
-        /* leave fallback copy and /releases/latest links in place */
+        /* keep fallback copy and /releases/latest links in place */
       });
   }
 
