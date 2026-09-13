@@ -207,5 +207,97 @@
       });
   }
 
+  var COVERAGE_RAW_URL =
+    "https://raw.githubusercontent.com/reardencode/rbitcoin/badges/coverage.json";
+  var COVERAGE_API_URL =
+    "https://api.github.com/repos/reardencode/rbitcoin/contents/coverage.json?ref=badges";
+  var COVERAGE_CACHE_KEY = "rbitcoin:coverage:v1";
+  var COVERAGE_CACHE_TTL_MS = 15 * 60 * 1000;
+
+  function coverageFromPayload(d) {
+    if (!d || d.message == null) return null;
+    var ratio = "";
+    if (typeof d.lh === "number" && typeof d.lf === "number") {
+      ratio = d.lh + " / " + d.lf;
+    }
+    return {
+      message: String(d.message),
+      ratio: ratio,
+      date: d.date ? String(d.date) : "",
+      cachedAt: Date.now(),
+    };
+  }
+
+  function applyCoverage(info) {
+    if (!info || !info.message) return;
+    setTextAll("[data-coverage-message]", info.message);
+    if (info.ratio) setTextAll("[data-coverage-ratio]", info.ratio);
+    if (info.date) setTextAll("[data-coverage-date]", info.date);
+  }
+
+  function readCoverageCache() {
+    try {
+      var raw = sessionStorage.getItem(COVERAGE_CACHE_KEY);
+      if (!raw) return null;
+      var cached = JSON.parse(raw);
+      if (!cached || !cached.message || !cached.cachedAt) return null;
+      if (Date.now() - cached.cachedAt > COVERAGE_CACHE_TTL_MS) return null;
+      return cached;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function writeCoverageCache(info) {
+    try {
+      sessionStorage.setItem(COVERAGE_CACHE_KEY, JSON.stringify(info));
+    } catch (_) {
+      /* ignore quota / private mode */
+    }
+  }
+
+  function fetchCoverage() {
+    return fetch(COVERAGE_RAW_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("coverage raw " + res.status);
+        return res.json();
+      })
+      .then(coverageFromPayload)
+      .catch(function () {
+        return fetch(COVERAGE_API_URL, {
+          headers: { Accept: "application/vnd.github+json" },
+        })
+          .then(function (res) {
+            if (!res.ok) throw new Error("coverage api " + res.status);
+            return res.json();
+          })
+          .then(function (body) {
+            if (!body || !body.content) throw new Error("coverage api empty");
+            var raw = String(body.content).replace(/\n/g, "");
+            return coverageFromPayload(JSON.parse(atob(raw)));
+          });
+      });
+  }
+
+  function loadCoverage() {
+    var cached = readCoverageCache();
+    if (cached) {
+      applyCoverage(cached);
+    }
+
+    fetchCoverage()
+      .then(function (info) {
+        if (!info) return;
+        if (!cached || cached.message !== info.message || cached.ratio !== info.ratio) {
+          writeCoverageCache(info);
+          applyCoverage(info);
+        }
+      })
+      .catch(function () {
+        /* keep HTML fallback */
+      });
+  }
+
   loadHighestRelease();
+  loadCoverage();
 })();

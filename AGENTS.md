@@ -28,7 +28,7 @@ Use this for site copy accuracy. Do **not** hardcode a canonical “why it exist
 
 ## Facts and claims
 
-- Product numbers and CLI examples must track the **node** repo README / OPERATOR (`github.com/reardencode/rbitcoin` / workspace `rearden-bitcoin`). Label ballpark figures as approximate.
+- Product numbers and CLI examples must track the **node** repo README / OPERATOR (`github.com/reardencode/rbitcoin` / workspace `rearden-bitcoin`). Label ballpark figures as approximate. Coverage % on Home / Security / About is filled in the client from the node `badges` branch (last green `master` coverage job) — do not hardcode a snapshot.
 - Name the current published tag on **install/download** (and the home version chip). The site fills the **highest GitHub Release semver** (non-draft, non-prerelease, `vMAJOR.MINOR.PATCH`) in the client from the Releases API — do not hardcode a patch, and do not list older tags. Everywhere else prefer “rbitcoin” / **0.x**, not a patch. GitHub Release: Linux musl (operator binary), Windows CRT-static, Darwin aarch64 (ad-hoc signed, not notarized). **Nix** (`nix build .#rbitcoin-musl`) is the **reproducible** Linux path. Linux first; Darwin/Windows are snapshots (no IoRing on Windows; Darwin needs `xattr -d com.apple.quarantine` if Gatekeeper kills it).
 - Do not invent “faster than bitcoin core” or storage SLAs. Do not publish a specific archive GiB or IBD hour count (they move). Laptop-class full-script IBD may be mentioned as practical, not a warranty.
 - Full archival only — no pruning. Linux-first. **Full Electrum wallet serving** (including **silent payment tweaks**) and optional Esplora are wallet-client backends, not a block explorer product.
