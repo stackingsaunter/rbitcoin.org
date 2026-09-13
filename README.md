@@ -1,6 +1,6 @@
 # rbitcoin.org
 
-Marketing site for **[rbitcoin](https://github.com/reardencode/rbitcoin)** — a bitcoin full node in Rust (compact archive, no UTXO set; in-process Electrum / optional Esplora). The current GitHub Release semver is filled in the client. Production Ready™ — independent consensus, growing test coverage.
+Marketing site for **[rbitcoin](https://github.com/reardencode/rbitcoin)** — a bitcoin full node in Rust (compact archive, no UTXO set; in-process Electrum / optional Esplora). The current GitHub Release semver is filled in the client. Production Ready™ — independent consensus, growing test coverage (91.93% published LCOV; ≥90% PR gate; highest published figure among bitcoin full nodes).
 
 **Live:** [https://rbitcoin.org](https://rbitcoin.org)
 
