@@ -241,6 +241,65 @@
         </div>
       </section>
 
+      <section class="section section-tight">
+        <div class="container">
+          <div class="section-head">
+            <h2>Line coverage</h2>
+            <p>
+              Among published line-coverage figures for bitcoin full nodes, rbitcoin’s is the
+              highest. The required GitHub Actions <code>coverage</code> job fails a PR below 90%
+              LCOV on first-party crates — bitcoin core’s public report does not. Method:
+              <a
+                href="https://github.com/reardencode/rbitcoin/blob/master/TESTING.md"
+                rel="noopener noreferrer"
+                target="_blank"
+                >TESTING.md</a
+              >.
+            </p>
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-value">91.93%</span>
+              <span class="metric-label">Published LCOV line</span>
+              <span class="metric-note">126876 / 138009 LH/LF · 2026-09-13</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">≥90%</span>
+              <span class="metric-label">Required PR gate</span>
+              <span class="metric-note">First-party crates only</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">71</span>
+              <span class="metric-label">bitcoin core functional scripts</span>
+              <span class="metric-note">Plus Hornet rules and differential fuzz</span>
+            </div>
+          </div>
+          <p class="footnote">
+            Peers use different tools and different denominators. Bitcoin core public LCOV (Marco,
+            2026-09-05) is
+            <a
+              href="https://maflcko.github.io/b-c-cov/test_bitcoin.coverage/index.html"
+              rel="noopener noreferrer"
+              target="_blank"
+              >~72%</a
+            >
+            of the whole tree (71.6%; kernel and script closer to ~88–89%; wallet and RPC drag the
+            total) and is report-only. Approximate Coveralls:
+            <a href="https://coveralls.io/github/btcsuite/btcd" rel="noopener noreferrer" target="_blank"
+              >btcd ~54%</a
+            >;
+            <a
+              href="https://coveralls.io/github/libbitcoin/libbitcoin-node"
+              rel="noopener noreferrer"
+              target="_blank"
+              >libbitcoin-node ~46%</a
+            >; libbitcoin-system (library, not the node) ~78%. satd / Hornet, electrs, and Fulcrum
+            have no published LCOV %. This is not a claim of more tests than bitcoin core, whose
+            functional suite is larger, and it is not proof of consensus match.
+          </p>
+        </div>
+      </section>
+
       <section class="section">
         <div class="container">
           <div class="section-head">
@@ -248,8 +307,9 @@
             <p>
               Operators who want to validate, keep a full archive, and serve wallets from the same
               box. Consensus is rust-native, not bitcoin core’s engine; 71 core functional scripts,
-              Hornet Node rules, and continuous fuzz are growing coverage — you may want another
-              node in view on mainnet until you are satisfied for your use.
+              Hornet Node rules, and continuous fuzz sit under a ≥90% LCOV PR gate — 91.93%
+              published, the highest published line-coverage figure among bitcoin full nodes. You may
+              want another node in view on mainnet until you are satisfied for your use.
             </p>
           </div>
           <div class="audience">
