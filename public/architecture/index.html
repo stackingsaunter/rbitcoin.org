@@ -6,7 +6,7 @@
     <title>Architecture — rbitcoin</title>
     <meta
       name="description"
-      content="rbitcoin store: compact full archive, no UTXO database, 1 TB-class disk, --datadir-cold, rust-bitcoin and libsecp256k1."
+      content="rbitcoin store: compact full archive, no UTXO database, ~720 GiB fully indexed / ~226 GiB hot, --datadir-cold, rust-bitcoin and libsecp256k1."
     />
     <link rel="canonical" href="https://rbitcoin.org/architecture/" />
     <meta property="og:type" content="website" />
@@ -14,7 +14,7 @@
     <meta property="og:title" content="Architecture — rbitcoin" />
     <meta
       property="og:description"
-      content="Compact full archive, no UTXO database, 1 TB-class disk, --datadir-cold, rust-bitcoin and libsecp256k1."
+      content="Compact full archive, no UTXO database, ~720 GiB fully indexed / ~226 GiB hot, --datadir-cold, rust-bitcoin and libsecp256k1."
     />
     <meta property="og:image" content="https://rbitcoin.org/assets/img/og-card.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -94,9 +94,9 @@
           <h1>Architecture</h1>
           <p>
             Lookups go to packed history, not a UTXO set. If you have more than one kind of disk,
-            split hot and cold. Schema 20 is current on the
-            <span data-release-minor>0.x</span> line; the format still moves before
-            1.0. Some upgrades rebuild indexes without a full re-sync.
+            split hot and cold. Schema 24 is current on the
+            <span data-release-minor>0.x</span> line; occupied 0.6.x stores refuse — wipe and redo
+            IBD. The format still moves before 1.0.
           </p>
         </div>
       </div>
@@ -181,7 +181,7 @@
                   </div>
                   <div class="store-cell">
                     <strong>silent payment tweaks</strong>
-                    <span>BIP352 on Electrum</span>
+                    <span>BIP352 + Frigate scan-key subscribe</span>
                   </div>
                 </div>
               </div>
@@ -218,8 +218,10 @@
             <article class="card">
               <h3>Class B — indexes (optional)</h3>
               <p>
-                Electrum scripthash history and <strong>silent payment tweaks</strong>. Extra disk
-                you choose, not a faster sync. Off until you turn wallet serving on.
+                Electrum scripthash history, <strong>silent payment tweaks</strong>, and Frigate
+                scan-key subscribe. Extra disk you choose, not a faster sync — and about 150 GiB
+                temporary on the hot volume while the index packs. Off until you turn wallet serving
+                on.
               </p>
             </article>
             <article class="card">
@@ -319,12 +321,12 @@
                 </tr>
                 <tr>
                   <td>Electrum / Esplora</td>
-                  <td>In-process Electrum, including silent payment tweaks</td>
+                  <td>In-process Electrum, including silent payment tweaks and Frigate scan-key subscribe</td>
                   <td>External indexer over core (Fulcrum, ElectrumX, …)</td>
                 </tr>
                 <tr>
                   <td>JSON-RPC</td>
-                  <td>Optional documented subset; decode helpers; cookie or user/pass; template selector, no stratum</td>
+                  <td>Optional documented subset; decode helpers; Bearer token or unix socket; template selector, no stratum</td>
                   <td>Large core surface including wallet and mining</td>
                 </tr>
                 <tr>
@@ -340,7 +342,9 @@
                 <tr>
                   <td>IBD wall-clock</td>
                   <td>
-                    IBD in the same neighborhood as core. One measured run, not a warranty.
+                    Under 9 hours on a laptop. Default milestone vs
+                    <code>--milestone 0</code> barely moves the clock. One measured run, not a
+                    warranty.
                   </td>
                   <td>assumevalid / default IBD on the same class of host</td>
                 </tr>
@@ -377,7 +381,7 @@
                 </tr>
                 <tr>
                   <td>Wallet indexes</td>
-                  <td>In-process scripthash + silent payment tweaks</td>
+                  <td>In-process scripthash + silent payment tweaks + Frigate scan-key subscribe</td>
                   <td>Separate DB built by scanning history</td>
                 </tr>
                 <tr>

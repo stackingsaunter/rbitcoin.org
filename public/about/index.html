@@ -122,7 +122,7 @@
             implementation possible. Using grok build and cursor, he specified
             and directed the work. Grok wrote the code (with a little help from
             Claude). In a couple of months the node went from not existing to
-            IBD performance in the same neighborhood as core, with a growing
+            IBD under nine hours on a laptop, with a growing
             suite of core fixtures, functional tests, and differential fuzz. A
             first on-camera conversation about this work:
             <a
@@ -143,12 +143,14 @@
             <strong data-release-minor>0.x</strong> is the current published line
             (<code data-release-line-tag>v0.x.x</code>). Since
             <span data-release-prev-version>the prior release</span>:
-            JSON-RPC decode on the node; tip connect runs off the reactor thread;
-            <strong>71</strong> core functional scripts, Hornet Node rule coverage, and continuous
-            differential fuzz against official bitcoind. Line coverage is a ≥90% LCOV PR gate
-            (<span data-coverage-message>91.93%</span> on
-            <span data-coverage-date>2026-09-13</span>, last green master job). On-disk schema 21 may refuse older wallet
-            indexes — see OPERATOR.md before upgrading. Test detail:
+            schema 24 (occupied 0.6.x stores refuse — wipe the datadir and redo IBD); packed mempool
+            persist; Frigate silent-payment subscribe; Electrum 1.6 package broadcast;
+            <strong>66</strong> core functional scripts that hit production, Hornet Node rule
+            coverage, and continuous differential fuzz against official bitcoind. Line coverage is a
+            ≥92% LCOV PR gate
+            (<span data-coverage-message>92.18%</span> on
+            <span data-coverage-date>2026-09-18</span>, last green master job). See OPERATOR.md
+            before upgrading. Test detail:
             <a href="../security/index.html#tests">what the tests cover</a>.
           </p>
 

@@ -132,12 +132,9 @@
           <div class="callout callout-info mb-2">
             <div>
               <p>
-                <strong
-                  >Upgrading from <span data-release-prev-line>0.x.x</span>.</strong
-                >
-                Schema 20 seals index heads differently.
-                Occupied schema 18/19 wallet indexes are refused — wipe those index dirs or rebuild;
-                Class A archive data stays. See
+                <strong>Upgrading from 0.6.x.</strong>
+                Schema 24 refuses occupied 0.6 (schema 20) stores. Wipe the datadir and redo IBD.
+                Empty indexes rewrite <code>meta</code>. See
                 <a
                   href="https://github.com/reardencode/rbitcoin/blob/master/CHANGELOG.md"
                   rel="noopener noreferrer"
@@ -221,6 +218,7 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
               target="_blank"
               >reproducible builds</a
             >.
+            The flake also exports a NixOS module (<code>services.rbitcoin</code>).
           </p>
 
           <h2>3. Signet, then mainnet</h2>
@@ -236,7 +234,7 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
           <p>
             If you downloaded the Release, run that binary instead of
             <code>./target/release/rbitcoin-node</code>. Custom signets take
-            <code>--signetchallenge</code> and <code>--signetblocktime</code>. Logging and other knobs:
+            <code>--signet-challenge</code> and <code>--signet-block-time</code>. Logging and other knobs:
             <a
               href="https://github.com/reardencode/rbitcoin/blob/master/OPERATOR.md"
               rel="noopener noreferrer"
@@ -252,8 +250,11 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
           </p>
           <p>
             <strong>Electrum</strong> is in the same process: history, unconfirmed, broadcast, fees,
-            and <strong>silent payment tweaks</strong>. Esplora REST is optional. This is not a block
-            explorer. Flags live in
+            <strong>silent payment tweaks</strong>, and Frigate scan-key subscribe. Electrum 1.6
+            package broadcast is there. Esplora REST is optional. This is not a block explorer.
+            Electrum and Esplora need the scripthash index — the example includes it. Building that
+            index needs about <strong>150 GiB</strong> extra on the hot volume until pack finishes.
+            Other flags live in
             <a
               href="https://github.com/reardencode/rbitcoin/blob/master/OPERATOR.md"
               rel="noopener noreferrer"
@@ -264,17 +265,17 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
           <div class="pre-wrap">
             <button type="button" class="copy-btn" data-copy="cmd-electrum">Copy</button>
             <pre><code id="cmd-electrum">./target/release/rbitcoin-node --datadir ./datadir-signet --network signet \
-  --electrum-listen 127.0.0.1:50001</code></pre>
+  --sh-index --electrum-listen 127.0.0.1:50001</code></pre>
           </div>
           <p>
-            <strong>JSON-RPC</strong> (<code>--rpc-listen</code>, cookie or
-            <code>--rpcuser</code> / <code>--rpcpassword</code>) is a slice of core’s surface: chain,
-            mempool, raw transactions,
+            <strong>JSON-RPC</strong> (<code>--rpc-listen</code>, or <code>--rpc</code> for a unix
+            socket) is a slice of core’s surface: chain, mempool, raw transactions,
             <code>decoderawtransaction</code> / <code>decodescript</code> /
             <code>validateaddress</code>, fee estimates, and a block template selector. Verbose
             transaction objects include core-style <code>scriptSig</code> and
-            <code>scriptPubKey.type</code>. No wallet, no stratum, no
-            <code>scantxoutset</code> coins scan. See
+            <code>scriptPubKey.type</code>. TCP auth is Bearer
+            <code>{datadir}/rpc.token</code>. There is no cookie and no
+            <code>--rpcuser</code>. No wallet, no stratum, no coins-database UTXO scan. See
             <a
               href="https://github.com/reardencode/rbitcoin/blob/master/docs/rpc.md"
               rel="noopener noreferrer"
@@ -288,14 +289,17 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
   --rpc-listen 127.0.0.1:18332</code></pre>
           </div>
           <p>
-            If you bind Electrum, Esplora, or RPC beyond localhost, put TLS in front.
+            If you bind Electrum, Esplora, or RPC beyond localhost, put TLS in front. The mempool
+            persists packed on disk; a restart does not rewrite the whole body.
           </p>
 
           <h2>5. Hot and cold datadirs</h2>
           <p>
-            A full archive wants a <strong>1 TB-class</strong> disk. Keep less than
-            <strong>250 GB</strong> on the fast volume even with wallet indexes. Inputs and witness
-            are rarely read; they can live on a second disk:
+            A full archive wants a <strong>1 TB-class</strong> disk. One measured mainnet store is
+            about <strong>720 GiB</strong> fully indexed, with about <strong>226 GiB</strong> on the
+            fast volume even with wallet indexes. Building the scripthash index needs about
+            <strong>150 GiB</strong> extra on that hot volume until pack finishes. Inputs and
+            witness are rarely read; they can live on a second disk:
           </p>
           <div class="pre-wrap">
             <button type="button" class="copy-btn" data-copy="cmd-cold">Copy</button>
@@ -303,9 +307,9 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
   --datadir-cold /mnt/hdd/rbtc-cold --network signet</code></pre>
           </div>
           <p>
-            <code>--datadir-cold</code> holds <code>inwit.body</code> and
-            <code>inwit.idx/</code> only. Outputs, spends, the txid index, and wallet indexes stay
-            on <code>--datadir</code>. Leave the flag off and both live in one tree. See
+            <code>--datadir-cold</code> holds <code>inwit</code> only. Outputs, spends, the txid
+            index, and wallet indexes stay on <code>--datadir</code>. Leave the flag off and both
+            live in one tree. See
             <a
               href="https://github.com/reardencode/rbitcoin/blob/master/OPERATOR.md"
               rel="noopener noreferrer"
@@ -323,8 +327,9 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
                 double-spends, maturity, and fees still run.
               </p>
               <p>
-                Use <code>--milestone 0</code> if you want every historical script checked. The
-                current default height is in the node README.
+                Use <code>--milestone 0</code> if you want every historical script checked. On
+                rbitcoin that does not change IBD wall-clock much. The current default height is in
+                the node README.
               </p>
             </div>
           </div>
@@ -336,11 +341,16 @@ install -m 755 result/bin/rbitcoin-node result/bin/rbitcoin-cli target/release/<
               snapshots exist; they are unproven. Darwin is aarch64 only.
             </li>
             <li>
-              <strong>Disk:</strong> 1 TB-class for a full archive. Keep under 250 GB on hot storage
-              even with full indexes; use <code>--datadir-cold</code> for the rest if you have two
-              volumes.
+              <strong>Disk:</strong> 1 TB-class for a full archive. About 720 GiB fully indexed on
+              one measured mainnet store; about 226 GiB stays hot even with full indexes. Building
+              the scripthash index needs about 150 GiB extra on the hot volume until it packs. Use
+              <code>--datadir-cold</code> for the rest if you have two volumes.
             </li>
             <li><strong>Mode:</strong> full archival only. There is no prune switch.</li>
+            <li>
+              <strong>IBD:</strong> laptop-class under 9 hours on one measured run — not a warranty.
+              Default milestone vs <code>--milestone 0</code> does not change that time much.
+            </li>
             <li>
               <strong>Build:</strong> GitHub Release<span data-release-wrap hidden>
                 <strong data-release-version></strong></span>, or

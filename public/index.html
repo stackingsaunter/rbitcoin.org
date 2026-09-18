@@ -175,9 +175,9 @@
               </svg>
               <h3>Electrum in the same process</h3>
               <p>
-                History, unconfirmed, broadcast, fees, and <strong>silent payment tweaks</strong>.
-                Esplora REST is there too. This is a wallet backend, not a block explorer with a
-                search box.
+                History, unconfirmed, Electrum 1.6 package broadcast, fees,
+                <strong>silent payment tweaks</strong>, and Frigate scan-key subscribe. Esplora REST
+                is there too. This is a wallet backend, not a block explorer with a search box.
               </p>
             </article>
             <article class="card">
@@ -200,8 +200,8 @@
               <h3>A slice of bitcoin core JSON-RPC</h3>
               <p>
                 Chain, mempool, raw transactions, decode helpers, fee estimates, and a block template
-                selector. Cookie or user/pass. No wallet, no stratum, no UTXO scanner. For script
-                history, use Electrum.
+                selector. TCP is Bearer <code>rpc.token</code>; a unix socket needs no header. No
+                wallet, no stratum, no coins-database UTXO scan. For script history, use Electrum.
               </p>
             </article>
           </div>
@@ -213,20 +213,22 @@
           <div class="section-head">
             <h2>Storage</h2>
             <p>
-              Full archival only. The chain grows, so plan on a <strong>1 TB-class</strong> disk and
-              don’t wait for a published byte count. If you have an NVMe and a spinning disk, split
-              them.
+              Full archival only. One measured mainnet store is about <strong>720 GiB</strong>
+              fully indexed, with about <strong>226 GiB</strong> staying hot. Building the
+              scripthash index needs about <strong>150 GiB</strong> extra on that hot volume until
+              pack finishes. Plan a <strong>1 TB-class</strong> disk — the tip moves. If you have an
+              NVMe and a spinning disk, split them.
             </p>
           </div>
           <div class="metrics">
             <div class="metric">
-              <span class="metric-value">1 TB-class</span>
-              <span class="metric-label">Full archive, indexes included</span>
-              <span class="metric-note">No prune. The tip moves.</span>
+              <span class="metric-value">~720 GiB</span>
+              <span class="metric-label">Fully indexed store</span>
+              <span class="metric-note">One measured mainnet. The tip moves.</span>
             </div>
             <div class="metric">
-              <span class="metric-value">&lt; 250 GB hot</span>
-              <span class="metric-label">Even with full indexes</span>
+              <span class="metric-value">~226 GiB</span>
+              <span class="metric-label">Hot even with full indexes</span>
               <span class="metric-note">Outputs, spends, heads, optional scripthash</span>
             </div>
             <div class="metric">
@@ -236,8 +238,40 @@
             </div>
           </div>
           <p class="footnote">
-            Skip <code>--datadir-cold</code> and everything lives in one tree.
+            Skip <code>--datadir-cold</code> and everything lives in one tree. The extra 150 GiB is
+            temporary; it is not in the settled 720 GiB.
           </p>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="container">
+          <div class="section-head">
+            <h2>Sync</h2>
+            <p>
+              Laptop-class IBD can finish in under nine hours. That is one measured run, not a
+              warranty. The default milestone still skips historical script and signature checks;
+              <code>--milestone 0</code> checks them. On this node that choice does not change
+              wall-clock much.
+            </p>
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-value">&lt; 9 h</span>
+              <span class="metric-label">Laptop-class IBD</span>
+              <span class="metric-note">One measured run. Milestone barely moves the clock.</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">Modest RAM</span>
+              <span class="metric-label">No coins cache</span>
+              <span class="metric-note">The OS page cache is the cache</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">Milestone</span>
+              <span class="metric-label">Default skips historical scripts</span>
+              <span class="metric-note">Prevouts, double-spends, maturity, and fees still run</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -247,7 +281,7 @@
             <h2>Line coverage</h2>
             <p>
               Among published line-coverage figures for bitcoin full nodes, rbitcoin’s is the
-              highest. The required GitHub Actions <code>coverage</code> job fails a PR below 90%
+              highest. The required GitHub Actions <code>coverage</code> job fails a PR below 92%
               LCOV on production files — bitcoin core’s public report does not. Method:
               <a
                 href="https://github.com/reardencode/rbitcoin/blob/master/TESTING.md"
@@ -259,20 +293,20 @@
           </div>
           <div class="metrics">
             <div class="metric">
-              <span class="metric-value" data-coverage-message>91.93%</span>
+              <span class="metric-value" data-coverage-message>92.18%</span>
               <span class="metric-label">Published LCOV line</span>
               <span class="metric-note"
-                ><span data-coverage-ratio>126876 / 138009</span> LH/LF ·
-                <span data-coverage-date>2026-09-13</span></span
+                ><span data-coverage-ratio>110849 / 120253</span> LH/LF ·
+                <span data-coverage-date>2026-09-18</span></span
               >
             </div>
             <div class="metric">
-              <span class="metric-value">≥90%</span>
+              <span class="metric-value">≥92%</span>
               <span class="metric-label">Required PR gate</span>
               <span class="metric-note">Production files; last green master job</span>
             </div>
             <div class="metric">
-              <span class="metric-value">71</span>
+              <span class="metric-value">66</span>
               <span class="metric-label">bitcoin core functional scripts</span>
               <span class="metric-note">Plus Hornet rules and differential fuzz</span>
             </div>
@@ -309,9 +343,9 @@
             <h2>Who it is for</h2>
             <p>
               Operators who want to validate, keep a full archive, and serve wallets from the same
-              box. Consensus is rust-native, not bitcoin core’s engine; 71 core functional scripts,
-              Hornet Node rules, and continuous fuzz sit under a ≥90% LCOV PR gate —
-              <span data-coverage-message>91.93%</span> on the last green master coverage job, the
+              box. Consensus is rust-native, not bitcoin core’s engine; 66 core functional scripts,
+              Hornet Node rules, and continuous fuzz sit under a ≥92% LCOV PR gate —
+              <span data-coverage-message>92.18%</span> on the last green master coverage job, the
               highest published line-coverage figure among bitcoin full nodes. You may
               want another node in view on mainnet until you are satisfied for your use.
             </p>
@@ -320,10 +354,10 @@
             <div class="card list-card for">
               <h3>Built for</h3>
               <ul>
-                <li>Electrum in-process, including silent payment tweaks</li>
+                <li>Electrum in-process, including silent payment tweaks and Frigate scan-key subscribe</li>
                 <li>A documented slice of JSON-RPC next to the archive</li>
-                <li>Linux with a 1 TB-class disk</li>
-                <li>Laptop-class IBD on modest RAM</li>
+                <li>Linux with a 1 TB-class disk (~720 GiB settled; ~150 GiB extra while scripthash packs)</li>
+                <li>Laptop-class IBD under 9 hours (one measured run)</li>
               </ul>
             </div>
             <div class="card list-card not">

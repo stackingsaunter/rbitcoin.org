@@ -132,15 +132,16 @@
           <h2 id="tests">What the tests cover</h2>
           <p>
             Independent consensus is the live risk. Tests do not change that. The node runs bitcoin
-            core’s transaction fixtures, <strong>71</strong> unmodified bitcoin core v31.1 functional
-            tests (excluding wallet, prune, and plaintext v1 P2P — 62 at 0.5.2, 14 at 0.5.0), Hornet
-            Node’s published block-validation rules mapped onto rbitcoin’s own cases, and nightly
-            differential fuzz against official bitcoind (block, spend, fork, compact, script,
-            BIP324). Line coverage is a required GitHub Actions gate: below 90% LCOV on production
-            files, the PR fails. Last green master coverage job:
-            <span data-coverage-message>91.93%</span>
-            (<span data-coverage-ratio>126876 / 138009</span> LH/LF,
-            <span data-coverage-date>2026-09-13</span>) — method in
+            core’s transaction fixtures, <strong>66</strong> unmodified bitcoin core v31.1 functional
+            tests that hit production (excluding wallet, prune, plaintext v1 P2P, and shim-only
+            scripts — 71 at 0.6.0, 14 at 0.5.0), Hornet Node’s published block-validation rules
+            mapped onto rbitcoin’s own cases, and nightly differential fuzz against official
+            bitcoind (block, spend, fork, compact, script, BIP324). Line coverage is a required
+            GitHub Actions gate: below 92% LCOV on production files, the PR fails. Last green master
+            coverage job:
+            <span data-coverage-message>92.18%</span>
+            (<span data-coverage-ratio>110849 / 120253</span> LH/LF,
+            <span data-coverage-date>2026-09-18</span>) — method in
             <a
               href="https://github.com/reardencode/rbitcoin/blob/master/TESTING.md"
               rel="noopener noreferrer"
@@ -158,7 +159,8 @@
           </p>
           <p>
             Use <code>--milestone 0</code> if you want every historical script checked. The default
-            flag is not a claim that they were.
+            flag is not a claim that they were. On rbitcoin that choice does not change IBD
+            wall-clock much.
           </p>
 
           <h2>In scope (node)</h2>
