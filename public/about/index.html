@@ -30,6 +30,7 @@
     <meta content="rbitcoin" property="og:image:alt" />
     <meta content="summary_large_image" name="twitter:card" />
     <script defer="" src="../assets/release.js"></script>
+    <script src="../assets/donation-qr.js" defer></script>
   </head>
   <body class="site essential-site reading-page">
     <a class="skip" href="#main">Skip to content</a>
@@ -139,22 +140,33 @@
             <div class="donation-method" data-copy-kind="address">
               <div class="donation-heading">
                 <h3>Silent payment</h3>
-                <button
-                  aria-label="Copy Silent payment address"
-                  class="copy-command"
-                  hidden=""
-                  type="button"
-                >
-                  <span>Copy</span>
-                </button>
+                <div class="donation-actions">
+                  <button
+                    aria-label="Copy Silent payment address"
+                    class="copy-command"
+                    hidden=""
+                    type="button"
+                  >
+                    <span>Copy</span>
+                  </button>
+                  <button
+                    class="qr-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="qr-sp-donate"
+                    aria-label="Show Silent payment QR code"
+                    hidden
+                  >
+                    Show QR
+                  </button>
+                </div>
               </div>
               <p class="donation-note">On-chain · requires a BIP352-compatible wallet</p>
               <code id="sp-donate"
                 >sp1qqwkt0aetchmm5gzucxych7l7kxaevetpx7npe54e236zqv73jevr5qucy5pgnut9fm7syjmlqv9ykm3qzzpfc0v3j737plzvvuy8k08a4scn62wl</code
               >
               <p aria-live="polite" class="copy-status" role="status"></p>
-              <details class="donation-qr">
-                <summary>Show QR code</summary>
+              <div class="donation-qr" id="qr-sp-donate">
                 <img
                   alt="Silent payment address QR code"
                   height="424"
@@ -162,25 +174,36 @@
                   src="../assets/img/qr-sp-donate.png"
                   width="424"
                 />
-              </details>
+              </div>
             </div>
             <div class="donation-method" data-copy-kind="address">
               <div class="donation-heading">
                 <h3>Strike</h3>
-                <button
-                  aria-label="Copy Strike address"
-                  class="copy-command"
-                  hidden=""
-                  type="button"
-                >
-                  <span>Copy</span>
-                </button>
+                <div class="donation-actions">
+                  <button
+                    aria-label="Copy Strike address"
+                    class="copy-command"
+                    hidden=""
+                    type="button"
+                  >
+                    <span>Copy</span>
+                  </button>
+                  <button
+                    class="qr-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="qr-ln-strike"
+                    aria-label="Show Strike QR code"
+                    hidden
+                  >
+                    Show QR
+                  </button>
+                </div>
               </div>
               <p class="donation-note">Lightning</p>
               <code id="ln-strike">reardencode@strike.me</code>
               <p aria-live="polite" class="copy-status" role="status"></p>
-              <details class="donation-qr">
-                <summary>Show QR code</summary>
+              <div class="donation-qr" id="qr-ln-strike">
                 <img
                   alt="Strike address QR code"
                   height="264"
@@ -188,25 +211,36 @@
                   src="../assets/img/qr-ln-strike.png"
                   width="264"
                 />
-              </details>
+              </div>
             </div>
             <div class="donation-method" data-copy-kind="address">
               <div class="donation-heading">
                 <h3>Cash App</h3>
-                <button
-                  aria-label="Copy Cash App address"
-                  class="copy-command"
-                  hidden=""
-                  type="button"
-                >
-                  <span>Copy</span>
-                </button>
+                <div class="donation-actions">
+                  <button
+                    aria-label="Copy Cash App address"
+                    class="copy-command"
+                    hidden=""
+                    type="button"
+                  >
+                    <span>Copy</span>
+                  </button>
+                  <button
+                    class="qr-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="qr-ln-cashapp"
+                    aria-label="Show Cash App QR code"
+                    hidden
+                  >
+                    Show QR
+                  </button>
+                </div>
               </div>
               <p class="donation-note">Lightning</p>
               <code id="ln-cashapp">reardencode@cash.app</code>
               <p aria-live="polite" class="copy-status" role="status"></p>
-              <details class="donation-qr">
-                <summary>Show QR code</summary>
+              <div class="donation-qr" id="qr-ln-cashapp">
                 <img
                   alt="Cash App address QR code"
                   height="264"
@@ -214,7 +248,7 @@
                   src="../assets/img/qr-ln-cashapp.png"
                   width="264"
                 />
-              </details>
+              </div>
             </div>
           </div>
         </section>

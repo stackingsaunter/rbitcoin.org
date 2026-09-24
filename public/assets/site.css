@@ -1281,24 +1281,36 @@ body {
   }
 }
 
-/* Release information stays secondary to the introduction. */
-.essential .links {
-  margin-bottom: 16px;
-}
-.essential .release-note {
-  margin: 0 0 42px;
-  font: 12px/1.6 var(--mono);
-  color: var(--muted);
-}
 .donation-qr {
   margin-top: 16px;
 }
-.donation-qr summary {
-  width: fit-content;
-  min-height: 44px;
+.donation-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: none;
+}
+.donation-actions .copy-command {
+  min-width: 0;
+  padding-inline: 0;
+}
+.qr-toggle {
+  border: 0;
+  background: none;
   padding: 10px 0;
-  font: 13px/1.8 var(--sans);
+  min-height: 44px;
   color: var(--muted);
+  font: 13px/1.5 var(--sans);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.qr-toggle:hover {
+  color: var(--ink);
+}
+@media print {
+  .qr-toggle {
+    display: none;
+  }
 }
 .donation-qr img {
   display: block;
