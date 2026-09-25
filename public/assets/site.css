@@ -896,15 +896,43 @@ body {
   }
 }
 
-/* Original supplied SVG variants, selected with the page theme. */
-.wordmark {
-  display: block;
-  width: 180px;
-  max-width: 100%;
-  height: auto;
+/* Original mark with Host Grotesk Medium lettering. */
+@font-face {
+  font-family: "Host Grotesk";
+  src: url("fonts/HostGrotesk-Medium.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
 }
-.chapter-brand .wordmark {
-  width: 128px;
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  vertical-align: middle;
+}
+.brand-name {
+  order: -1;
+  font:
+    500 44px/1 "Host Grotesk",
+    Arial,
+    sans-serif;
+  letter-spacing: -1.5px;
+}
+.brand-mark {
+  display: block;
+  width: 52px;
+  height: auto;
+  flex: none;
+}
+.chapter-brand .brand-lockup {
+  gap: 9px;
+}
+.chapter-brand .brand-name {
+  font-size: 31px;
+  letter-spacing: -1px;
+}
+.chapter-brand .brand-mark {
+  width: 38px;
 }
 .site-colophon nav {
   align-items: center;

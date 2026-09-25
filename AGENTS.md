@@ -57,7 +57,7 @@ The version-specific figures and flags above are reference context, not a promis
 - `public/assets/site.css` owns shared styles and tokens. Reuse existing classes and edit the owning rule; avoid page-specific overrides and accumulating duplicate declarations at the end of the file.
 - Keep a single centered reading column. Home uses `.essential` (566px maximum outer width with 24px desktop side padding). Reading pages use `.chapter-grid` (614px outer width with 48px side padding), giving both a 518px desktop text measure.
 - Keep the existing responsive rules: 700px for Home adjustments, 650px for reading layouts and 27px gutters, and 420px for stacked download rows and diagrams. A new breakpoint needs a content-driven reason, not a screenshot's exact viewport size.
-- Use Arial/Helvetica/system sans-serif for prose and the existing system monospace stack for code and small utility text. Do not introduce webfonts.
+- Use Arial/Helvetica/system sans-serif for prose and the existing system monospace stack for code and small utility text. Keep body typography unchanged. The brand name alone uses the self-hosted Host Grotesk Medium (500) font; retain its OFL license.
 - Preserve the hierarchy: a compact wordmark, modest page title, short introduction, then clearly separated sections. Reading-page titles are 30px on desktop and 28px on narrow screens; body copy is 17px/16px. Match neighboring components instead of increasing weight or size to create emphasis.
 - Maintain whitespace and thin horizontal rules. Avoid cards around prose, gradients, shadows, decorative backgrounds, badges, oversized headings, and animated entrances unless explicitly requested.
 - Keep related controls aligned, allow labels to wrap naturally, and prevent page-wide horizontal scrolling. Long commands scroll within their code block; addresses wrap without changing their characters.
@@ -66,7 +66,7 @@ The version-specific figures and flags above are reference context, not a promis
 
 - Use CSS variables for page colors: `--paper`, `--ink`, `--muted`, `--line`, and `--rule`. The existing stylesheet is the source of truth.
 - Light mode uses white paper, `#202020` text, and `#686868` secondary text. Dark mode uses `#171818` paper, `#e9e8e4` text, and `#aaa9a4` secondary text. Keep orange restrained to the supplied identity and meaningful diagram accents.
-- Preserve the supplied SVG wordmarks and favicon. Do not redraw them, replace the wordmark with typed text, distort their proportions, or recolor them incidentally. Wordmarks are 180px wide on Home and 128px on reading pages; their light/dark orange colors are `#C3502A` / `#EC7F5B`.
+- Use the original upstream light/dark marks (`assets/img/logo.svg` and `logo-on-dark.svg`) to the right of live “rbitcoin” text in Host Grotesk Medium. Keep the original favicon. The brand text is 44px on Home and 31px on reading pages, with 52px/38px marks. Preserve the source SVG proportions and colors; do not restore the orange-square wordmark without an explicit request.
 - `theme.js` follows system appearance until an explicit choice, remembers that choice, and keeps it consistent across pages. The footer control stays a native button styled like the Source link, with the existing `Dark ☾` / `Light ☀` labels. Do not restore a three-way theme selector or a header switch.
 - Keep both themes readable, including focus states, diagrams, and code. QR images remain black on white with their quiet zones intact in both themes. Printing uses the light palette.
 
